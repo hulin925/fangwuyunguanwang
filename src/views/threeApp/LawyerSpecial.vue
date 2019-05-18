@@ -54,8 +54,6 @@
         options.append('page', 1);
         this.$store.dispatch('LawyerSpecial', options)
           .then(data => {
-            console.log(data,123)
-
             data.faces=data.weburl+data.face;
             this.WrapSpecialInfo.lid=data.uid;
             sessionStorage.setItem('specialInfo',JSON.stringify(this.WrapSpecialInfo));

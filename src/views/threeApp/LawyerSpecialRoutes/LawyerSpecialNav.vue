@@ -119,7 +119,6 @@
         options.append('uid', this.GetQueryString('uid'));
         this.$store.dispatch('LawyerSpecial', options)
           .then(data => {
-            console.log(data)
             data.faces = data.weburl + data.face;
             this.WrapSpecialInfo.lid = data.uid;
             this.WrapData = data;
@@ -170,13 +169,13 @@
   .goBack {
     position: absolute;
     left: 16/@r;
-    top: 60/@r;
+    top: 0;
     padding: 20/@r;
   }
   .share {
     position: absolute;
     right: 16/@r;
-    top: 60/@r;
+    top: 0;
     padding: 20/@r 30/@r 30/@r;
   }
   .share .icon-fenxiang2{

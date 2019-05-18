@@ -118,6 +118,11 @@
         <img src="../../../assets/img/follow.png" alt="">
         <p>暂无发布相关文章！</p>
       </div>
+
+      <div class="noData" v-if="noData">
+        <p>亲,没有更多数据了~</p>
+      </div>
+
     </mescroll-vue>
 
     <div class="showStart">
@@ -154,6 +159,7 @@
     data() {
       var _this = this;
       return {
+        noData:false,
         showStart: false,
         noneData: false,
         isWebpage: '',//判断是否是h5网页打开
@@ -188,7 +194,7 @@
             })
           },
           htmlNodata: '<p class="upwarp-nodata">亲,没有更多数据了~</p>',
-          noMoreSize: 1, //如果列表已无数据,可设置列表的总数量要大于5才显示无更多数据;
+          noMoreSize: 2, //如果列表已无数据,可设置列表的总数量要大于5才显示无更多数据;
           // 避免列表数据过少(比如只有一条数据),显示无更多数据会不好看
           // 这就是为什么无更多数据有时候不显示的原因
           // toTop: {
@@ -212,7 +218,6 @@
     },
     created() {
       this.lid = JSON.parse(sessionStorage.getItem('specialInfo')).lid;
-      console.log(this.lid)
     },
     methods: {
       GetQueryString(name) { //截取?后想要的数据 lawyerId
@@ -282,11 +287,19 @@
           .then(data => {
             console.log(data)
             // page.size=data.list.length;//获取每页条数
-            if (data.list.length) { //判定数据是否存在,显示关注按钮
-              this.noneData = false;
-            } else {
-              this.noneData = true;
+            if(page.num==1){
+              if (data.list.length) { //判定数据是否存在,显示关注按钮
+                this.noneData = false;
+              } else {
+                this.noneData = true;
+              }
             }
+            if (data.list.length) { //判定数据是否存在,显示关注按钮
+              this.noData = false;
+            } else {
+              this.noData = true;
+            }
+
             var weburl = data.list[0].weburl;
             // 请求的列表数据
             let arr = data.list;
@@ -412,6 +425,11 @@
 <style scoped lang="less">
   @r: 30rem;
 
+  .noData{
+    line-height:100/@r;
+    text-align:center;
+    color:#555;
+  }
   /*通过fixed固定mescroll的高度*/
   .mescroll {
     /*position: fixed;*/
@@ -421,6 +439,7 @@
     height: auto;
     overflow-y: scroll;
     box-sizing: border-box;
+    background-color: #fff;
   }
 
   .app {
@@ -651,9 +670,10 @@
 
   .noneData {
     width: 100%;
-    margin-top: 10%;
+    padding-top: 10%;
     text-align: center;
     line-height: 200/@r;
+    background-color: #fff;
   }
 
   .Grade{

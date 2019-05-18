@@ -2,178 +2,179 @@
   <div>
     <nav>
       <div class="totalWidth clearfix" ref="totalWidth">
-        <div v-for="item,index in navType" class="navList" :class="{active:item.isId==navId}" @click.stop="changeNav(item,index)">
+        <div v-for="item,index in navType" class="navList" :class="{active:item.isId==navId}"
+             @click.stop="changeNav(item,index)">
           <span>{{item.name}}</span>
         </div>
       </div>
     </nav>
 
     <div v-if="fatiao!='fatiao'">
-    <mescroll-vue :down="mescrollDown" :up="mescrollUp" @init="mescrollInit">
+      <mescroll-vue :down="mescrollDown" :up="mescrollUp" @init="mescrollInit">
 
-      <div class="noneData" v-if="noneData">
-        <img src="../../../assets/img/follow.png" alt="">
-        <p>暂无关注律师！</p>
-      </div>
+        <div class="noneData" v-if="noneData">
+          <img src="../../../assets/img/follow.png" alt="">
+          <p>暂无关注律师！</p>
+        </div>
 
-      <section v-else>
-        <ul class="list">
-          <li v-for="item,index in dataList">
-            <div v-if="item.pro">
-              <div class="title clearfix">
-                <div class="left">
+        <section v-else>
+          <ul class="list">
+            <li v-for="item,index in dataList">
+              <div v-if="item.pro">
+                <div class="title clearfix">
+                  <div class="left">
+                    <img :src="item.pic[0]" alt="">
+                  </div>
+                  <div class="center">
+                    <h2>{{item.advtitle}}</h2>
+                  </div>
+                  <div class="right">
+                    <span class="Advertisement">广 告</span>
+                  </div>
+                </div>
+                <div class="AdvertisementContent" @click.stop="pictureJump(item)">
                   <img :src="item.pic[0]" alt="">
                 </div>
-                <div class="center">
-                  <h2 :class="{GradeColor:item.cert_type != 1}">{{item.username}}</h2>
-                </div>
-                <div class="right">
-                  <span class="Advertisement">广 告</span>
-                </div>
               </div>
-              <div class="AdvertisementContent" @click.stop="pictureJump(item)">
-                <img :src="item.pic[0]" alt="">
-              </div>
-            </div>
-            <div v-else>
-              <div class="title clearfix" @click.stop="PersonalTopics(item)">
-                <div class="left">
-                  <img :src="item.faces" alt="">
-                </div>
+              <div v-else>
+                <div class="title clearfix" @click.stop="PersonalTopics(item)">
+                  <div class="left">
+                    <img :src="item.faces" alt="">
+                  </div>
 
-                <div class="Grade">
-                  <img src="../../../assets/img/lanV.png" alt="" v-if="item.cert_type!=1" class="GradeFirst">
-                  <img src="../../../assets/img/level.png" alt="" v-else class="GradeTwo">
-                </div>
+                  <div class="Grade">
+                    <img src="../../../assets/img/lanV.png" alt="" v-if="item.cert_type!=1" class="GradeFirst">
+                    <img src="../../../assets/img/level.png" alt="" v-else class="GradeTwo">
+                  </div>
 
-                <div class="center">
-                  <h2 :class="{GradeColor:item.cert_type != 1}">{{item.username}}</h2>
-                  <p v-if="item.add_time!=0">{{item.add_time}}</p>
-                  <p v-else>{{item.company}}</p>
-                </div>
-                <div class="right" @click.stop="Follows(item)" v-if="fans!='fans'">
-                  <span v-if="item.isguanzhu==0">+ 关注</span>
-                  <span v-else class="cancelFollow">
+                  <div class="center">
+                    <h2 :class="{GradeColor:item.cert_type != 1}">{{item.username}}</h2>
+                    <p v-if="item.add_time!=0">{{item.add_time}}</p>
+                    <p v-else>{{item.company}}</p>
+                  </div>
+                  <div class="right" @click.stop="Follows(item)" v-if="fans!='fans'">
+                    <span v-if="item.isguanzhu==0">+ 关注</span>
+                    <span v-else class="cancelFollow">
                     <i class="iconfont  icon-gou"></i>
                     已关注
                   </span>
+                  </div>
+                </div>
+                <div class="topTitle" @click.stop="JumpDetail(item)">{{item.title}}</div>
+                <!--<div class="brief clearfix">-->
+                <!--<span>刑事</span>-->
+                <!--<span>治安</span>-->
+                <!--</div>-->
+                <div v-if="item.classify==2">
+                  <div class="content" @click.stop="JumpDetail(item)" ref="contentss">
+                    <div v-html="item.content"></div>
+                  </div>
+                  <div class="Img clearfix" :style="{width:item.num==4?'80%':'100%'}">
+
+                    <div class="ImgIcon" v-for="v,index in item.arr" v-if="item.num>1&&item.num!=4"
+                         @click.stop="ImgShow(item.arr,index)">
+                      <div>
+                        <img v-lazy="v" alt="">
+                      </div>
+                    </div>
+
+                    <div class="ImgIcon" v-for="v,index in item.arr" v-if="item.num==4"
+                         @click.stop="ImgShow(item.arr,index)">
+                      <div>
+                        <img v-lazy="v" alt="">
+                      </div>
+                    </div>
+
+                    <div class="firstImg" v-if="item.num==1" @click.stop="ImgShow(new Array(item.arr[0]),index)">
+                      <div>
+                        <img v-lazy="item.arr[0]" alt="">
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+                <div v-if="item.classify==6">
+                  <div class="content" @click.stop="JumpDetail(item)">
+                    <div v-html="item.content"></div>
+                  </div>
+                  <div class="Img clearfix" :style="{width:item.AndroidNumber==4?'80%':'100%'}">
+
+                    <div class="ImgIcon" v-for="v,index in item.thumbnail"
+                         v-if="item.AndroidNumber>1&&item.AndroidNumber!=4"
+                         @click.stop="ImgShow(item.thumbnail,index)">
+                      <div>
+                        <img v-lazy="v" alt="">
+                      </div>
+                    </div>
+
+                    <div class="ImgIcon" v-for="v,index in item.thumbnail" v-if="item.AndroidNumber==4"
+                         @click.stop="ImgShow(item.thumbnail,index)">
+                      <div>
+                        <img v-lazy="v" alt="">
+                      </div>
+                    </div>
+
+                    <div class="firstImg" v-if="item.AndroidNumber==1"
+                         @click.stop="ImgShow(new Array(item.thumbnail[0]),index)">
+                      <div>
+                        <img v-lazy="item.thumbnail[0]" alt="">
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+                <div class="Img clearfix" v-if="item.classify==3">
+                  <div v-if="item.local==0" @click.stop="androidVideo(item.videos)">
+                    <video
+                      width="320" height="240" :poster="item.cover" controls="controls"
+                    >
+                      <source :src="item.videos" type="video/mp4">
+                    </video>
+                  </div>
+                  <div v-else-if="item.local==1" @click.stop="androidVideo(item.path)">
+                    <video
+                      width="320" height="240" :poster="item.cover" controls="controls"
+                    >
+                      <source :src="item.path" type="video/mp4">
+                    </video>
+                  </div>
+
+                </div>
+
+                <div class="bottom">
+                  <div @click.stop="JumpDetail(item)">
+                    <i class="iconfont  icon-yuedu"></i>
+                    <span>阅读</span>
+                    <i>{{item.click =''?'0':item.click?item.click:'0'}}</i>
+                  </div>
+                  <!--//item.id,item.classify,item.isguanzhu-->
+                  <div @click.stop="JumpDetail(item)">
+                    <i class="iconfont  icon-pinglun"></i>
+                    <span>评论</span>
+                    <i>{{item.history_comment_count}}</i>
+                  </div>
+                  <div @click.stop="Fabulous(item)" :class="{color:item.iszan == 1}">
+                    <span><i class="iconfont  icon-zan" :class="{color:item.iszan == 1}"></i></span>
+                    <span>点赞</span>
+                    <i>{{item.histort_reward_count}}</i>
+                  </div>
                 </div>
               </div>
-              <div class="topTitle" @click.stop="JumpDetail(item)">{{item.title}}</div>
-              <!--<div class="brief clearfix">-->
-              <!--<span>刑事</span>-->
-              <!--<span>治安</span>-->
-              <!--</div>-->
-              <div v-if="item.classify==2">
-                <div class="content" @click.stop="JumpDetail(item)" ref="contentss">
-                  <div v-html="item.content"></div>
-                </div>
-                <div class="Img clearfix" :style="{width:item.num==4?'80%':'100%'}">
+            </li>
+          </ul>
+        </section>
 
-                  <div class="ImgIcon" v-for="v,index in item.arr" v-if="item.num>1&&item.num!=4"
-                       @click.stop="ImgShow(item.arr,index)">
-                    <div>
-                      <img v-lazy="v" alt="">
-                    </div>
-                  </div>
+      </mescroll-vue>
 
-                  <div class="ImgIcon" v-for="v,index in item.arr" v-if="item.num==4"
-                       @click.stop="ImgShow(item.arr,index)">
-                    <div>
-                      <img v-lazy="v" alt="">
-                    </div>
-                  </div>
-
-                  <div class="firstImg" v-if="item.num==1" @click.stop="ImgShow(new Array(item.arr[0]),index)">
-                    <div>
-                      <img v-lazy="item.arr[0]" alt="">
-                    </div>
-                  </div>
-
-                </div>
-              </div>
-
-              <div v-if="item.classify==6">
-                <div class="content" @click.stop="JumpDetail(item)">
-                  <div v-html="item.content"></div>
-                </div>
-                <div class="Img clearfix" :style="{width:item.AndroidNumber==4?'80%':'100%'}">
-
-                  <div class="ImgIcon" v-for="v,index in item.thumbnail"
-                       v-if="item.AndroidNumber>1&&item.AndroidNumber!=4"
-                       @click.stop="ImgShow(item.thumbnail,index)">
-                    <div>
-                      <img v-lazy="v" alt="">
-                    </div>
-                  </div>
-
-                  <div class="ImgIcon" v-for="v,index in item.thumbnail" v-if="item.AndroidNumber==4"
-                       @click.stop="ImgShow(item.thumbnail,index)">
-                    <div>
-                      <img v-lazy="v" alt="">
-                    </div>
-                  </div>
-
-                  <div class="firstImg" v-if="item.AndroidNumber==1"
-                       @click.stop="ImgShow(new Array(item.thumbnail[0]),index)">
-                    <div>
-                      <img v-lazy="item.thumbnail[0]" alt="">
-                    </div>
-                  </div>
-
-                </div>
-              </div>
-              <div class="Img clearfix" v-if="item.classify==3">
-                <div v-if="item.local==0" @click.stop="androidVideo(item.videos)">
-                  <video
-                    width="320" height="240" :poster="item.cover" controls="controls"
-                  >
-                    <source :src="item.videos" type="video/mp4">
-                  </video>
-                </div>
-                <div v-else-if="item.local==1" @click.stop="androidVideo(item.path)">
-                  <video
-                    width="320" height="240" :poster="item.cover" controls="controls"
-                  >
-                    <source :src="item.path" type="video/mp4">
-                  </video>
-                </div>
-
-              </div>
-
-              <div class="bottom">
-                <div @click.stop="JumpDetail(item)">
-                  <i class="iconfont  icon-yuedu"></i>
-                  <span>阅读</span>
-                  <i>{{item.click =''?'0':item.click?item.click:'0'}}</i>
-                </div>
-                <!--//item.id,item.classify,item.isguanzhu-->
-                <div @click.stop="JumpDetail(item)">
-                  <i class="iconfont  icon-pinglun"></i>
-                  <span>评论</span>
-                  <i>{{item.history_comment_count}}</i>
-                </div>
-                <div @click.stop="Fabulous(item)" :class="{color:item.iszan == 1}">
-                  <span><i class="iconfont  icon-zan" :class="{color:item.iszan == 1}"></i></span>
-                  <span>点赞</span>
-                  <i>{{item.histort_reward_count}}</i>
-                </div>
-              </div>
-            </div>
-          </li>
-        </ul>
-      </section>
-
-    </mescroll-vue>
-
-    <div class="showStart">
-      <toast v-model="showStart" type="text" :time="1000">
-        <div class="pointStart">
-          <i></i>
-        </div>
-      </toast>
-    </div>
-    <!--<oneImg :value="isOff" :data="arrImg" @setShow="isOff=false"></oneImg>-->
+      <div class="showStart">
+        <toast v-model="showStart" type="text" :time="1000">
+          <div class="pointStart">
+            <i></i>
+          </div>
+        </toast>
+      </div>
+      <!--<oneImg :value="isOff" :data="arrImg" @setShow="isOff=false"></oneImg>-->
     </div>
 
     <div v-else>
@@ -210,21 +211,17 @@
     },
     data() {
       return {
-        fatiao:'',
-        judgeId:'',
-        navTag:'tuijian',//跳转页面
-        navId:'',//nav
-        navType:'',//导航
+        fatiao: '',
+        judgeId: '',
+        navTag: 'tuijian',//跳转页面
+        navId: '',//nav
+        navType: '',//导航
         AdvertisingData: [],//广告
         showStart: false,//点赞
         ImgPass: {},//传图片对象
         isOff: false,
         fans: '',//获取关注标识
         noneData: '',
-        initList: [],
-        content: '',
-        list: '',
-        histort_reward_count: 0, //点赞数
         lid: '',
         dataList: [],
         mescroll: null, // mescroll实例对象
@@ -267,27 +264,26 @@
       window.pictureUrl = this.pictureUrl;//图片跳转链接
     },
     methods: {
-      changeNav(item,index){//nav跳转
-        this.navId=index;
-        this.navTag=item.tag;
-        this.judgeId=item.id;
-        this.fatiao=item.tag;
+      changeNav(item, index) {//nav跳转
+        this.navId = index;
+        this.navTag = item.tag;
+        this.judgeId = item.id;
+        this.fatiao = item.tag;
       },
-      getType(){//获取分类
-        let options=new FormData();
+      getType() {//获取分类
+        let options = new FormData();
         // options.append('uid','1006');
         // options.append('token','6dfd23173ef55ba12ce6e6bfc04b9da24e1d45b3e88a163156bda33fc6351f8d15');
-        this.$store.dispatch('getType',options)
-          .then(data=>{
-            for(let i=0;i<data.length;i++){
-              data[i].isId=i;
+        this.$store.dispatch('getType', options)
+          .then(data => {
+            for (let i = 0; i < data.length; i++) {
+              data[i].isId = i;
             }
-            this.navType=data;
-            console.log(data)
+            this.navType = data;
           })
       },
-      pictureJump(item){//广告跳转对接
-        window.location.href=item.outside_link;
+      pictureJump(item) {//广告跳转对接
+        window.location.href = item.outside_link;
       },
       Advertisement() {//广告接口
         let options = new FormData();
@@ -322,22 +318,10 @@
         return null;
       },
       PersonalTopics(item) {//跳转个人律师专题页
-        this.$router.push({name:'LawyerSpecial',query:{lid:item.uid}});
-        console.log(item)
+        this.$router.push({name: 'LawyerSpecial', query: {lid: item.uid}});
       },
       JumpDetail(obj) { //跳转律师详情页
-        this.obj.id = obj.id;
-        this.obj.classify = obj.classify;
-        // ArticleDetail(this.obj);//ios传递参数
-        // window.htmlToAndroid.ArticleDetail(JSON.stringify(this.obj));//android 跳转详情
-
-        if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
-          //Ios
-          ArticleDetail(this.obj);//ios传递参数
-        } else if (/(Android)/i.test(navigator.userAgent)) {
-          //Android终端
-          window.AndroidMethod.ArticleDetail(JSON.stringify(this.obj));//android 跳转详情
-        }
+        this.$router.push({name: 'LawyerFindArticleDetail', query: {obj}});
       },
       // mescroll组件初始化的回调,可获取到mescroll对象
       mescrollInit(mescroll) {
@@ -347,8 +331,8 @@
       initData(page, mescroll) { //获取页面初始数据
         // this.$store.commit("showLoading");
         let options = new FormData();
-        options.append('id',this.judgeId);
-        options.append('tag',this.navTag);
+        options.append('id', this.judgeId);
+        options.append('tag', this.navTag);
         options.append('page', page.num);
         options.append('uid', this.GetQueryString('uid'));
         this.$store.dispatch('LawyerFindRecommend', options)
@@ -403,6 +387,7 @@
                   })
                 })()
               }
+
               function pauseAll(index) {
                 for (var j = videos.length - 1; j >= 0; j--) {
                   if (j != index) videos[j].pause();
@@ -471,17 +456,17 @@
             // this.$store.commit("hidenLoading");
             //广告处理
             // this.$nextTick(()=>{
-              let randomData=Math.floor(10*Math.random());
-              for(let i=0;i<this.AdvertisingData.length;i++){
-                if(page.num==i+1){
-                  let AdvertisingData = this.AdvertisingData[i];
-                  if(page.num==1&&randomData+(i*9)==0){
-                    this.dataList.splice(randomData+(i*9)+1,0,AdvertisingData)
-                  }else{
-                    this.dataList.splice(randomData+(i*9),0,AdvertisingData)
-                  }
+            let randomData = Math.floor(10 * Math.random());
+            for (let i = 0; i < this.AdvertisingData.length; i++) {
+              if (page.num == i + 1) {
+                let AdvertisingData = this.AdvertisingData[i];
+                if (page.num == 1 && randomData + (i * 9) == 0) {
+                  this.dataList.splice(randomData + (i * 9) + 1, 0, AdvertisingData)
+                } else {
+                  this.dataList.splice(randomData + (i * 9), 0, AdvertisingData)
                 }
               }
+            }
 
 
           }, err => {
@@ -505,11 +490,11 @@
         this.$store.dispatch('Fabulous', options)
           .then(data => {
             console.log(data)
-            if(data.data.flag==1){
-              this.showStart=true;
+            if (data.data.flag == 1) {
+              this.showStart = true;
             }
-            this.dataList = this.dataList.map(obj=>{
-              if(obj.id==item.id){
+            this.dataList = this.dataList.map(obj => {
+              if (obj.id == item.id) {
                 obj.iszan = data.data.flag
                 obj.histort_reward_count = data.data.zannum;
               }
@@ -521,14 +506,14 @@
         let options = new FormData();
         options.append('uid', 1006);//1006
         options.append('lid', item.uid);//1ba10ba7695a436779076e71af056d4f8fe18ff1  //1069
-        options.append('token','6dfd23173ef55ba12ce6e6bfc04b9da24e1d45b3e88a163156bda33fc6351f8d15');//6dfd23173ef55ba12ce6e6bfc04b9da24e1d45b3e88a163156bda33fc6351f8d15
+        options.append('token', '6dfd23173ef55ba12ce6e6bfc04b9da24e1d45b3e88a163156bda33fc6351f8d15');//6dfd23173ef55ba12ce6e6bfc04b9da24e1d45b3e88a163156bda33fc6351f8d15
         this.$store.dispatch('follows', options)
           .then(data => {
             console.log(data)
             // this.mescroll.resetUpScroll()
-            this.dataList=this.dataList.map(obj=>{
-              if(item.uid==obj.uid){
-                obj.isguanzhu=data.data.flag;
+            this.dataList = this.dataList.map(obj => {
+              if (item.uid == obj.uid) {
+                obj.isguanzhu = data.data.flag;
                 return obj;
               }
               return obj;
@@ -544,26 +529,28 @@
 <style scoped lang="less" type="text/less">
   @r: 30rem;
 
-  nav{
-    width:100%;
-    height:82/@r;
-    overflow:hidden;
-    position:fixed;
-    left:0;
-    top:0;
-    z-index:9999999;
-    border-bottom:1px solid #ccc;
+  nav {
+    width: 100%;
+    height: 82/@r;
+    overflow: hidden;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 9999999;
+    border-bottom: 1px solid #ccc;
   }
-  .totalWidth .navList{
-    font-size:34/@r;
-    text-align:center;
+
+  .totalWidth .navList {
+    font-size: 34/@r;
+    text-align: center;
     float: left;
-    width:140/@r;
-    line-height:80/@r;
-    height:80/@r;
+    width: 140/@r;
+    line-height: 80/@r;
+    height: 80/@r;
     position: relative;
   }
-  .navList.active:before{
+
+  .navList.active:before {
     position: absolute;
     bottom: 0;
     left: 50%;
@@ -576,22 +563,25 @@
     border-radius: 3/@r;
     transform: translateX(-50%);
   }
+
   nav div.active {
     font-size: 28/@r;
     color: #e60012;
     font-weight: bold;
   }
 
-  .icon-gou{
-    font-size:20/@r;
-    color:#000;
+  .icon-gou {
+    font-size: 20/@r;
+    color: #000;
   }
+
   /*通过fixed固定mescroll的高度*/
   .mescroll {
     position: fixed;
     top: 82/@r;
     bottom: 0;
     height: auto;
+    background-color: #fff;
   }
 
   .topTitle {
@@ -661,14 +651,17 @@
     letter-spacing: 4/@r;
     padding: 4/@r 16/@r;
   }
-  .title .right .cancelFollow{
+
+  .title .right .cancelFollow {
     border: 1px solid #b0b0b0;
     color: #b0b0b0;
   }
-  .title .right .Advertisement{
+
+  .title .right .Advertisement {
     border: 1px solid #0AC1B2;
     color: #0AC1B2;
   }
+
   .brief {
     margin-top: 16/@r;
   }
@@ -860,18 +853,19 @@
     }
   }
 
-  .AdvertisementContent{
-    margin:20/@r 0;
-    position:relative;
-    width:100%;
-    height:400/@r;
+  .AdvertisementContent {
+    margin: 20/@r 0;
+    position: relative;
+    width: 100%;
+    height: 400/@r;
     overflow: hidden;
   }
-  .AdvertisementContent img{
-    width:100%;
-    position:absolute;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%);
+
+  .AdvertisementContent img {
+    width: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 </style>

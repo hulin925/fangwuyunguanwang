@@ -226,6 +226,7 @@ export default {
     return new Promise((resolve,reject)=>{
       axios.post(str+'/special/getbyflag',data)
         .then(data=>{
+          console.log(data)
           let res = data.data;
           if(Number(res.code)==10000){
             resolve(res.data)

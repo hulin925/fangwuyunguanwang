@@ -20,27 +20,30 @@
                 <p v-if="data.add_time!=0">{{data.add_time}}</p>
                 <p v-else>{{data.company}}</p>
               </div>
-              <div class="right" @click.stop="Follows(data)" v-if="isShowFollow!=0">
+              <div class="right" @click.stop="Follows(data)">
                 <span v-if="data.isguanzhu==0">+ 关注 </span>
-                <span v-else>+ 取消关注 </span>
+                <span v-else class="cancelFollow">
+                    <i class="iconfont  icon-gou"></i>
+                    已关注
+                </span>
               </div>
             </div>
             <div class="brief clearfix">
               <!--<span>刑事</span>-->
               <!--<span>治安</span>-->
               <i>阅读 {{data.click}}</i>
-               <i class="iconfont  icon-yuedu"></i>
+              <i class="iconfont  icon-yuedu"></i>
             </div>
             <div class="topTitle">{{data.title}}</div>
-            <div class="content" v-if="data.classify==2" @click="ImgShow(data.arr)">
+            <div class="content" v-if="data.classify==2">
               <div v-html="data.content"></div>
             </div>
             <div class="content" v-if="data.classify==3">
               <!--<video width="320" height="240" controls="controls" :poster="data.cover">-->
-                <!--<source :src="data.videos" type="video/mp4">-->
+              <!--<source :src="data.videos" type="video/mp4">-->
               <!--</video>-->
 
-              <div v-if="data.local==0" @click.stop="androidVideo(data.videos)">
+              <div v-if="data.local==0">
                 <video
                   width="320" height="240" :poster="data.cover" controls="controls" webkit-playsinline="true"
                   x5-video-player-type="h5" x5-video-player-fullscreen="true"
@@ -48,7 +51,7 @@
                   <source :src="data.videos" type="video/mp4">
                 </video>
               </div>
-              <div v-else-if="data.local==1" @click.stop="androidVideo(data.path)">
+              <div v-else-if="data.local==1">
                 <video
                   width="320" height="240" :poster="data.cover" controls="controls" webkit-playsinline="true"
                   x5-video-player-type="h5"
@@ -58,12 +61,11 @@
               </div>
 
 
-
             </div>
             <div class="content Article" v-if="data.classify==6">
               <div>{{data.content}}</div>
               <div class="clearfix">
-                <div class="ImgIcon" v-for="v in data.thumbnail" @click.stop="ImgShow(data.thumbnail)">
+                <div class="ImgIcon" v-for="v in data.thumbnail">
                   <img v-lazy="v" alt="">
                 </div>
               </div>
@@ -77,7 +79,7 @@
               <!--</div>-->
             </div>
             <div class="bottom">
-              <div @click.stop="Forward()">
+              <div>
                 <i class="iconfont  icon-zhuanfa"></i>
                 <span>转发</span>
                 <i></i>
@@ -127,18 +129,8 @@
 
 <script>
   // 引入mescroll的vue组件
-  import {PopupPicker, Group,Toast} from 'vux'
+  import {PopupPicker, Group, Toast} from 'vux'
   import MescrollVue from 'mescroll.js/mescroll.vue'
-  import {
-    PersonalTopics,//律师专题页
-    Follows,//关注
-    Fabulous,//点赞
-    Comment,//评论
-    Collection,//收藏
-    ImgShow,//图片
-    Forward,//转发
-
-  } from '@/assets/public.js'
 
   export default {
     name: "lawyerFind",
@@ -150,21 +142,13 @@
     },
     data() {
       return {
+        id: '',//文章id
+        lid: '',//律师
+        classify: '',//文章类型
         showStart: false,
-        isShowFollow: '',//判断是否有关注
-        collection: {},//收藏传递数据
-        obj: {},//储存ios传递的数据
-        userMessage: {},//存uid
-        cover: '',
-        videos: '',
         weburl: '',
         data: {},//初始数据
-        navIndex: 0,
-        navList: [],
-        id: '',
-        type: '',
         lidImg: '',
-        uidImg: '',
         list: [],
         mescroll: null, // mescroll实例对象
         mescrollDown: {}, //下拉刷新的配置. (如果下拉刷新和上拉加载处理的逻辑是一样的,则mescrollDown可不用写了)
@@ -197,39 +181,12 @@
     mounted() {
     },
     created() {
-      this.isShowFollow = this.GetQueryString('isShowFollow');//判断是否有关注
-      // window.FollowsPass = this.FollowsPass;//关注传递参数的方法名
-      // window.FabulousPass = this.FabulousPass;//点赞传递参数的方法名
-      window.CommentPass = this.CommentPass;//评论传递参数的方法名
+      this.lid = this.$route.query.obj.uid;
+      this.id = this.$route.query.obj.id;
+      this.classify = this.$route.query.obj.classify;
+      console.log(this.$route)
     },
     methods: {
-      androidVideo(item){//android处理视频播放
-        let obj={};
-        obj.videos=item;
-        window.AndroidMethod.androidVideo(JSON.stringify(obj));//android 传递参数
-      },
-      Forward(){//转发传递参数
-        if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
-          //Ios
-          Forward(this.collection);//转发方法
-        } else if (/(Android)/i.test(navigator.userAgent)) {
-          //Android终端
-          window.AndroidMethod.Forward(JSON.stringify(this.collection));//android 传递参数
-        }
-        // Forward(this.collection)
-      },
-      ImgShow(arr) {//图片传递参数ios
-
-        // ImgShow(arr);
-        this.obj.dataImg=arr;
-        if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
-          //Ios
-          ImgShow(arr);//ios传递参数
-        } else if (/(Android)/i.test(navigator.userAgent)) {
-          //Android终端
-          window.AndroidMethod.ImgShow(JSON.stringify(this.obj));//android 传递参数
-        }
-      },
       CommentPass(obj) {//评论接口，ios传递数据
         let now = JSON.parse(obj);
         let options = new FormData();
@@ -259,17 +216,6 @@
       },
       PersonalTopics(item) {//跳转个人律师专题页
         this.obj.lid = item.uid;
-
-        // PersonalTopics(this.obj);
-
-        if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
-          //Ios
-          PersonalTopics(this.obj);//ios 传递参数
-        } else if (/(Android)/i.test(navigator.userAgent)) {
-          //Android终端
-          window.AndroidMethod.PersonalTopics(JSON.stringify(this.obj));//android 传递参数
-        }
-
       },
       GetQueryString(name) { //截取?后想要的数据 lawyerId
         var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
@@ -284,11 +230,10 @@
       initFind(page, mescroll) { //获取页面初始数据
         this.$store.commit("showLoading");
         let options = new FormData();
-        options.append('id', this.GetQueryString('id'));
-        options.append('tag', this.GetQueryString('tag'));
-        // options.append('type', this.GetQueryString('type'));
-        options.append('classify', this.GetQueryString('classify'));
-        options.append('uid', this.GetQueryString('uid'));
+        options.append('id', this.id);
+        // options.append('tag', 'tuijian');
+        options.append('classify', this.classify);
+        options.append('uid', this.lid);
         options.append('page', page.num);
         this.$store.dispatch('LawyerFindArticleDetail', options)
           .then(data => {
@@ -311,7 +256,7 @@
               arr = arr.map(v => {
                 return data.weburl + v
               })
-               data.thumbnail = arr;
+              data.thumbnail = arr;
             }
 
             //图片截取
@@ -332,19 +277,6 @@
             }
 
             this.$store.commit("hidenLoading");
-
-            // 请求的列表数据
-            this.collection.classify = data.classify;//收藏数据传递
-            this.collection.ArticleId = data.id;//收藏数据传递
-            this.collection.iscollection = data.iscollection;//收藏数据传递
-
-            if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
-              //Ios
-              Collection(this.collection);//收藏方法
-            } else if (/(Android)/i.test(navigator.userAgent)) {
-              //Android终端
-              window.AndroidMethod.Collection(JSON.stringify(this.collection));//android 传递参数
-            }
           }, err => {
             mescroll.endErr()
           }).catch((e) => {
@@ -357,154 +289,39 @@
         this.initFind(page, mescroll)
       },
       Follows(item) {//关注接口
-        this.obj.lid = item.uid;
-        // Follows(this.obj);//ios 传递参数
-        // window.htmlToAndroid.Follows(JSON.stringify(this.obj));//android 传递参数
+        let options = new FormData();
+        options.append('uid', 1006);//1006
+        options.append('lid', item.uid);//1ba10ba7695a436779076e71af056d4f8fe18ff1  //1069
+        options.append('token', '6dfd23173ef55ba12ce6e6bfc04b9da24e1d45b3e88a163156bda33fc6351f8d15');//6dfd23173ef55ba12ce6e6bfc04b9da24e1d45b3e88a163156bda33fc6351f8d15
+        this.$store.dispatch('follows', options)
+          .then(data => {
+            // this.mescroll.resetUpScroll()
+            if (item.uid == this.data.uid) {
+              this.data.isguanzhu = data.data.flag;
+            }
+            return this.data
+          })
 
-        if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
-          //Ios
-          Follows(this.obj);//ios 传递参数
-
-          if (this.GetQueryString('uid') != null) {
-            let options = new FormData();
-            options.append('uid', this.GetQueryString('uid'));//1006
-            options.append('lid', item.uid);//1ba10ba7695a436779076e71af056d4f8fe18ff1  //1069
-            options.append('token',this.GetQueryString('token'));//6dfd23173ef55ba12ce6e6bfc04b9da24e1d45b3e88a163156bda33fc6351f8d15
-            this.$store.dispatch('follows', options)
-              .then(data => {
-                // this.mescroll.resetUpScroll()
-                if(item.uid==this.data.uid){
-                  this.data.isguanzhu=data.data.flag;
-                }
-                return this.data
-              })
-          }
-
-        } else if (/(Android)/i.test(navigator.userAgent)) {
-          //Android终端
-          // window.AndroidMethod.Follows(JSON.stringify(this.obj));//android 传递参数
-          var abc = window.AndroidMethod.FabulousViewpoint(JSON.stringify(this.obj));
-          var now = JSON.parse(abc);
-          if (now.login == 1) {
-            let options = new FormData();
-            options.append('uid', now.uid);//getdetail1006
-            options.append('lid', item.uid);//1ba10ba7695a436779076e71af056d4f8fe18ff1  //1069
-            options.append('token',now.token);//6dfd23173ef55ba12ce6e6bfc04b9da24e1d45b3e88a163156bda33fc6351f8d15
-            this.$store.dispatch('follows', options)
-              .then(data => {
-                // this.mescroll.resetUpScroll()
-                  if(item.uid==this.data.uid){
-                    this.data.isguanzhu=data.data.flag;
-                  }
-                  return this.data
-              })
-          }
-
-        }
       },
-      // FollowsPass(obj) {//关注接口，ios传递数据改变页面
-      //   let now = JSON.parse(obj);
-      //   let options = new FormData();
-      //   options.append('uid', now.uid);//1006
-      //   options.append('lid', now.lid);
-      //   options.append('token', now.token);//6dfd23173ef55ba12ce6e6bfc04b9da24e1d45b3e88a163156bda33fc6351f8d
-      //   this.$store.dispatch('follows', options)
-      //     .then(data => {
-      //       this.mescroll.resetUpScroll()
-      //     })
-      // },
       Fabulous(item) { //点赞接口
-        this.obj.lid = item.uid;
-        this.obj.fid = item.id;
-        this.obj.type = item.classify;
-        // Fabulous(this.obj);//ios 参数传递
-        // window.htmlToAndroid.Fabulous(JSON.stringify(this.obj));//android 点赞
-
-        // let options = new FormData();
-        // options.append('uid','1006');
-        // options.append('lid', item.uid);
-        // options.append('fid', item.id);//文章id
-        // options.append('type', item.classify);//文章类型
-        // options.append('token', '6dfd23173ef55ba12ce6e6bfc04b9da24e1d45b3e88a163156bda33fc6351f8d15');
-        // this.$store.dispatch('Fabulous', options)
-        //   .then(data => {
-        //     if (item.id == this.data.id && item.classify == this.data.classify) {
-        //       this.data.iszan = data.data.flag;
-        //       this.data.histort_reward_count = data.data.zannum;
-        //     }
-        //     return this.data;
-        //     // this.mescroll.resetUpScroll()
-        //   })
-        // return;
-
-        if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
-          //Ios
-          Fabulous(this.obj);//ios 传递参数
-          if (this.GetQueryString('uid') != null) {
-            let options = new FormData();
-            options.append('uid', this.GetQueryString('uid'));
-            options.append('lid', item.uid);
-            options.append('fid', item.id);//文章id
-            options.append('type', item.classify);//文章类型
-            options.append('token', this.GetQueryString('token'));
-            this.$store.dispatch('Fabulous', options)
-              .then(data => {
-                if(data.data.flag==1){
-                  this.showStart=true;
-                }
-                if (item.id == this.data.id && item.classify == this.data.classify) {
-                  this.data.iszan = data.data.flag;
-                  this.data.histort_reward_count = data.data.zannum;
-                }
-                return this.data;
-              })
-          }
-
-
-        } else if (/(Android)/i.test(navigator.userAgent)) {
-          //Android终端
-          // window.AndroidMethod.Fabulous(JSON.stringify(this.obj));//android 点赞
-
-          var abc = window.AndroidMethod.FabulousViewpoint(JSON.stringify(this.obj))
-          var now = JSON.parse(abc);
-          if (now.login == 1) {
-            let options = new FormData();
-            options.append('uid', now.uid);
-            options.append('lid', item.uid);
-            options.append('fid', item.id);//文章id
-            options.append('type', item.classify);//文章类型
-            options.append('token', now.token);
-            this.$store.dispatch('Fabulous', options)
-              .then(data => {
-                if(data.data.flag==1){
-                  this.showStart=true;
-                }
-                  if (item.id == this.data.id && item.classify == this.data.classify) {
-                    this.data.iszan = data.data.flag;
-                    this.data.histort_reward_count = data.data.zannum;
-                  }
-                  return this.data;
-              })
-          }
-
-
-        }
+        let options = new FormData();
+        options.append('uid', '1006');
+        options.append('lid', item.uid);
+        options.append('fid', item.id);//文章id
+        options.append('type', item.classify);//文章类型
+        options.append('token', '6dfd23173ef55ba12ce6e6bfc04b9da24e1d45b3e88a163156bda33fc6351f8d15');
+        this.$store.dispatch('Fabulous', options)
+          .then(data => {
+            if (data.data.flag == 1) {
+              this.showStart = true;
+            }
+            if (item.id == this.data.id && item.classify == this.data.classify) {
+              this.data.iszan = data.data.flag;
+              this.data.histort_reward_count = data.data.zannum;
+            }
+            return this.data;
+          })
       },
-      // FabulousPass(obj) { //点赞接口,ios传递数据改变页面
-      //   let now = JSON.parse(obj);
-      //   let options = new FormData();
-      //   options.append('uid', now.uid);
-      //
-      //   options.append('lid', now.lid);
-      //   options.append('fid', now.fid);
-      //   options.append('type', now.type);
-      //   options.append('token', now.token);
-      //   this.$store.dispatch('Fabulous', options)
-      //     .then(data => {
-      //       this.mescroll.resetUpScroll()
-      //     })
-      // },
-
 
     },
 
@@ -543,12 +360,12 @@
   .list li {
     padding: 32/@r 32/@r 0;
     border-bottom: 1px solid #ddd;
-    overflow:hidden;
+    overflow: hidden;
   }
 
   .list .title {
     height: 88/@r;
-    position:relative;
+    position: relative;
   }
 
   .title .left {
@@ -571,7 +388,7 @@
     color: #939393;
     margin-left: 20/@r;
     line-height: 34/@r;
-    font-size:24/@r;
+    font-size: 24/@r;
   }
 
   .center h2 {
@@ -587,23 +404,29 @@
 
   .title .right span {
     display: block;
-    border: 1px solid #0AC1B2;
+    border: 1px solid #FF8200;
     border-radius: 10/@r;
     font-size: 28/@r;
-    color: #0AC1B2;
+    color: #FF8200;
     text-align: center;
     line-height: 50/@r;
     letter-spacing: 4/@r;
     padding: 4/@r 16/@r;
   }
 
+  .title .right .cancelFollow {
+    border: 1px solid #b0b0b0;
+    color: #b0b0b0;
+  }
+
   .brief {
     margin-top: 16/@r;
-    color:#878787;
+    color: #878787;
   }
-  .brief .icon-yuedu{
-    margin-right:12/@r;
-    margin-top:-8/@r;
+
+  .brief .icon-yuedu {
+    margin-right: 12/@r;
+    margin-top: -8/@r;
   }
 
   .brief span {
@@ -627,7 +450,7 @@
   }
 
   .content {
-    font-size:32/@r;
+    font-size: 32/@r;
     color: #333;
   }
 
@@ -660,37 +483,43 @@
     justify-content: space-between;
   }
 
-  .bottom div:nth-child(2){
-    margin-left:-38/@r;
+  .bottom div:nth-child(2) {
+    margin-left: -38/@r;
   }
-  .icon-zan{
-    position:absolute;
-    left:-55/@r;
-    top:-2/@r;
-    font-size:60/@r;
-    color:#878787;
+
+  .icon-zan {
+    position: absolute;
+    left: -55/@r;
+    top: -2/@r;
+    font-size: 60/@r;
+    color: #878787;
   }
-  .icon-zhuanfa{
-    font-size:38/@r;
+
+  .icon-zhuanfa {
+    font-size: 38/@r;
     vertical-align: bottom;
   }
-  .icon-pinglun{
+
+  .icon-pinglun {
     display: inline-block;
     vertical-align: bottom;
-    font-size:40/@r;
+    font-size: 40/@r;
   }
-  .icon-yuedu{
+
+  .icon-yuedu {
     display: inline-block;
     vertical-align: bottom;
-    font-size:40/@r;
+    font-size: 40/@r;
   }
-  .bottom .color{
-    color:#FF8200;
+
+  .bottom .color {
+    color: #FF8200;
   }
+
   .bottom div {
     line-height: 88/@r;
     color: #666666;
-    position:relative;
+    position: relative;
   }
 
   .userComment {
@@ -731,10 +560,11 @@
 
   .userComment .userInfo p:nth-child(2) {
     color: #000;
-    font-size:32/@r;
+    font-size: 32/@r;
   }
+
   .userComment .userInfo p:nth-child(3) {
-    font-size:24/@r;
+    font-size: 24/@r;
   }
 
   .Product {
@@ -745,34 +575,39 @@
   .Article img {
     margin-bottom: 20/@r;
   }
-  .openApp{
-    position:fixed;
-    bottom:20/@r;
-    left:2%;
-    background-color:#8c94ff;
-    color:#fff;
-    width:96%;
-    line-height:80/@r;
-    font-size:32/@r;
-    text-align:center;
+
+  .openApp {
+    position: fixed;
+    bottom: 20/@r;
+    left: 2%;
+    background-color: #8c94ff;
+    color: #fff;
+    width: 96%;
+    line-height: 80/@r;
+    font-size: 32/@r;
+    text-align: center;
     -webkit-border-radius: 30/@r;
     -moz-border-radius: 30/@r;
     border-radius: 30/@r;
   }
-  .Grade{
-    position:absolute;
-    left:46/@r;
-    top:54/@r;
-    width:34/@r;
+
+  .Grade {
+    position: absolute;
+    left: 46/@r;
+    top: 54/@r;
+    width: 34/@r;
   }
-  .Grade .GradeFirst{
-    width:100%;
+
+  .Grade .GradeFirst {
+    width: 100%;
   }
-  .Grade .GradeTwo{
-    width:90%;
+
+  .Grade .GradeTwo {
+    width: 90%;
   }
-  .list .GradeColor{
-    color:#FF8200;
+
+  .list .GradeColor {
+    color: #FF8200;
   }
 
   .pointStart {
@@ -780,6 +615,7 @@
     height: 220/@r;
     overflow: hidden;
   }
+
   .pointStart i {
     display: block;
     width: 100%;
@@ -788,6 +624,7 @@
     background-size: 2000% 100%;
     animation: moveHande .65s forwards 1 steps(19);
   }
+
   @keyframes moveHande {
     form {
       background-position-x: left;
@@ -796,13 +633,15 @@
       background-position-x: right;
     }
   }
-  .statement{
-    padding-top:20/@r;
-    font-size:24/@r;
-    text-align:center;
-    color:#878787;
+
+  .statement {
+    padding-top: 20/@r;
+    font-size: 24/@r;
+    text-align: center;
+    color: #878787;
   }
-  .statement p{
-    line-height:40/@r;
+
+  .statement p {
+    line-height: 40/@r;
   }
 </style>

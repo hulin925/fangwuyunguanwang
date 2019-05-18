@@ -438,6 +438,7 @@
     height: auto;
     overflow-y: scroll;
     box-sizing: border-box;
+    background-color: #fff;
   }
 
   .app {
@@ -574,9 +575,10 @@
   }
   .noneData {
     width: 100%;
-    margin-top:10%;
+    padding-top:10%;
     text-align: center;
     line-height: 200/@r;
+    background-color: #fff;
   }
   #noneData{
     border:none;
