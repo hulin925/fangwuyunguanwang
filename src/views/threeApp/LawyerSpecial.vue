@@ -6,7 +6,7 @@
       <router-view/>
     </section>
     <!--关注-->
-    <div class="mainFooter" @click.stop="Follows(WrapData.uid)">
+    <div class="mainFooter" @click.stop="download">
       <span v-if="followObj.isguanzhu==0">+ 关注</span>
       <span v-else>取消关注</span>
     </div>
@@ -32,10 +32,8 @@
       }
     },
     created() {
-      this.$nextTick(()=>{
-        this.lid=this.$route.query.lid;
-        this.WrapInitData();
-      })
+      this.lid=this.$route.query.lid;
+      this.WrapInitData();
     },
     mounted() {
       // window.FollowsPassV= this.FollowsPassV;
@@ -56,7 +54,7 @@
           .then(data => {
             data.faces=data.weburl+data.face;
             this.WrapSpecialInfo.lid=data.uid;
-            sessionStorage.setItem('specialInfo',JSON.stringify(this.WrapSpecialInfo));
+            sessionStorage.setItem('specialInfo',JSON.stringify(data));
             this.WrapData = data;
             // this.$store.commit('hidenLoading')
           })

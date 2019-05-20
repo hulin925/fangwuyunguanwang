@@ -20,7 +20,7 @@
                 <p v-if="data.add_time!=0">{{data.add_time}}</p>
                 <p v-else>{{data.company}}</p>
               </div>
-              <div class="right" @click.stop="Follows(data)">
+              <div class="right" @click.stop="download">
                 <span v-if="data.isguanzhu==0">+ 关注 </span>
                 <span v-else class="cancelFollow">
                     <i class="iconfont  icon-gou"></i>
@@ -79,17 +79,17 @@
               <!--</div>-->
             </div>
             <div class="bottom">
-              <div>
+              <div @click.stop="download">
                 <i class="iconfont  icon-zhuanfa"></i>
                 <span>转发</span>
                 <i></i>
               </div>
-              <div @click.stop="Comment(data)">
+              <div @click.stop="download">
                 <i class="iconfont  icon-pinglun"></i>
                 <span>评论</span>
                 <i>{{data.history_comment_count}}</i>
               </div>
-              <div @click.stop="Fabulous(data)" :class="{color:data.iszan == 1}">
+              <div @click.stop="download" :class="{color:data.iszan == 1}">
                 <span><i class="iconfont  icon-zan" :class="{color:data.iszan == 1}"></i></span>
                 <span>点赞</span>
                 <i>{{data.histort_reward_count}}</i>

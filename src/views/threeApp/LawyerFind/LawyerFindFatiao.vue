@@ -150,7 +150,6 @@
         options.append('id', '0');//'0'
         this.$store.dispatch('LawyerFindFatiao', options)
           .then(response => {
-            console.log(response)
             this.classify = response.classify;
             // 请求的列表数据
             // this.titleImg=response.ad[0].picturepath;

@@ -120,7 +120,6 @@
         videoData:'',//android视频处理
         showStart: false,
         noneData:false,
-        isWebpage:'',//判断是否是h5网页打开
         obj: {},//储存ios数据传递
         lid: '',
         mescroll: null, // mescroll实例对象
@@ -136,12 +135,9 @@
             _this.$nextTick(function () {
               let nav = document.querySelector('nav');
               if (y > 200) {
-                nav.style.position = 'fixed'
-                nav.style.zIndex = "9999"
+                nav.style.position = 'fixed';
+                nav.style.zIndex = "9999";
                 nav.style.top = '0';
-                nav.style.paddingTop = "20px"
-                nav.style.transform = "translateZ(0)" //解决ios下滚动跳动问题
-                nav.style.WebKitTransform = "translateZ(0)"
               } else {
                 nav.style.position = 'static';
                 nav.style.paddingTop = "0";
@@ -173,8 +169,7 @@
     },
     created() {
       this.videoData=this.GetQueryString('video');
-      this.isWebpage=this.GetQueryString("isWebpage");//判断是否是h5网页打开
-      this.lid = JSON.parse(sessionStorage.getItem('specialInfo')).lid;
+      this.lid=JSON.parse(sessionStorage.getItem('LawyerId'));
     },
     methods: {
       androidVideo(item){//android处理视频播放
@@ -189,10 +184,6 @@
         return null;
       },
       JumpDetails(obj) {//跳转律师详情页
-        if(this.isWebpage==1){
-          window.location.href="https://web.3fgj.com/sharePage/download1.html";
-          return;
-        }
         this.obj.id = obj.id;
         this.obj.classify = obj.classify;
         // ArticleVideo(this.obj);ios 参数传递
@@ -219,7 +210,7 @@
         options.append('lid', this.lid);//1068
         options.append('flag', 'video');
         options.append('page', page.num);
-        options.append('uid', this.GetQueryString('uid'))
+        options.append('uid', this.GetQueryString('uid'));
         this.$store.dispatch('LawyerVideo', options)
           .then(data => {
             if (data.list.length) { //判定数据是否存在,显示关注按钮
@@ -330,10 +321,6 @@
       //     })
       // },
       Fabulous(item) { //点赞接口
-        if(this.isWebpage==1){
-          window.location.href="https://web.3fgj.com/sharePage/download1.html";
-          return;
-        }
         this.obj.lid = item.uid;
         this.obj.fid = item.id;
         this.obj.type = item.classify;

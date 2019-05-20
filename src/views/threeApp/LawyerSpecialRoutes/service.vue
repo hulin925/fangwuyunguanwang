@@ -69,7 +69,6 @@
     },
     data() {
       return {
-        isWebpage:'',//判断是否是h5网页打开
         price:'',
         iosObj:{},
         errCon:'',//弹出内容
@@ -91,9 +90,7 @@
       this.dataList;
     },
     created() {
-      this.isWebpage=this.GetQueryString('isWebpage');//判断是否是h5网页打开
-      let lid=JSON.parse(sessionStorage.getItem('specialInfo'));//获取律师ID
-      this.lid=lid.lid;
+      this.lid = JSON.parse(sessionStorage.getItem('LawyerId'));
       this.initDataService();
       this.LawyerServiceContract()
         .then(data => {
@@ -112,10 +109,6 @@
         return null;
       },
       Consultation(){//咨询
-        if(this.isWebpage==1){
-          window.location.href="https://web.3fgj.com/sharePage/download1.html";
-          return;
-        }
         if(!this.value6.length){
           this.showErr=true;
           this.errCon="请选择合同类型"

@@ -9,7 +9,23 @@
       </div>
     </nav>
 
-    <div v-if="fatiao!='fatiao'">
+    <div v-if="fatiao=='fatiao'">
+      <LawyerFindFatiao></LawyerFindFatiao>
+    </div>
+    <div v-else-if="fatiao=='AboutPc'">
+      <AboutPc></AboutPc>
+    </div>
+    <div v-else-if="fatiao=='DownloadPc'">
+      <DownloadPc></DownloadPc>
+    </div>
+    <div v-else-if="fatiao=='IndexPc'">
+      <IndexPc></IndexPc>
+    </div>
+    <div v-else-if="fatiao=='LawPc'">
+      <LawPc></LawPc>
+    </div>
+
+    <div v-else>
       <mescroll-vue :down="mescrollDown" :up="mescrollUp" @init="mescrollInit">
 
         <div class="noneData" v-if="noneData">
@@ -44,7 +60,8 @@
 
                   <div class="Grade">
                     <img src="../../../assets/img/lanV.png" alt="" v-if="item.cert_type!=1" class="GradeFirst">
-                    <img src="../../../assets/img/level.png" alt="" v-else class="GradeTwo">
+                    <img src="../../../assets/img/level.png"
+                         alt="" v-else class="GradeTwo">
                   </div>
 
                   <div class="center">
@@ -52,7 +69,7 @@
                     <p v-if="item.add_time!=0">{{item.add_time}}</p>
                     <p v-else>{{item.company}}</p>
                   </div>
-                  <div class="right" @click.stop="Follows(item)" v-if="fans!='fans'">
+                  <div class="right" @click.stop="download" v-if="fans!='fans'">
                     <span v-if="item.isguanzhu==0">+ 关注</span>
                     <span v-else class="cancelFollow">
                     <i class="iconfont  icon-gou"></i>
@@ -154,7 +171,7 @@
                     <span>评论</span>
                     <i>{{item.history_comment_count}}</i>
                   </div>
-                  <div @click.stop="Fabulous(item)" :class="{color:item.iszan == 1}">
+                  <div @click.stop="download" :class="{color:item.iszan == 1}">
                     <span><i class="iconfont  icon-zan" :class="{color:item.iszan == 1}"></i></span>
                     <span>点赞</span>
                     <i>{{item.histort_reward_count}}</i>
@@ -177,8 +194,9 @@
       <!--<oneImg :value="isOff" :data="arrImg" @setShow="isOff=false"></oneImg>-->
     </div>
 
-    <div v-else>
-      <LawyerFindFatiao></LawyerFindFatiao>
+
+    <div class="openApp" @click.stop="download">
+      <span>打开APP查看更多详情</span>
     </div>
 
   </div>
@@ -186,19 +204,15 @@
 
 <script>
   import LawyerFindFatiao from './LawyerFindFatiao.vue'//法条组件
+  import AboutPc from '../Pc/AboutPc.vue'//关于我们
+  import DownloadPc from '../Pc/DownloadPc.vue'//快速咨询
+  import IndexPc from '../Pc/IndexPc.vue'//首页
+  import LawPc from '../Pc/LawPc.vue'//法条
+
   import {PopupPicker, Group, Toast} from 'vux'
   import {mapGetters} from "vuex"
   import MescrollVue from 'mescroll.js/mescroll.vue'
   // import oneImg from '@/components/Img.vue'
-  import {
-    ArticleDetail,//跳转文章详情
-    PersonalTopics,//跳转律师专题页
-    Follows,//关注
-    Fabulous,//点赞
-    ImgShow,//图片处理
-    pictureUrl,//图片链接跳转
-  } from '@/assets/public.js'
-
   export default {
     name: "lawyerFind",
     components: {
@@ -207,6 +221,10 @@
       Group,//vux
       Toast,//vux
       LawyerFindFatiao,//法条
+      AboutPc,//关于我们
+      DownloadPc,//快速咨询
+      IndexPc,//首页
+      LawPc,//法条
       // oneImg
     },
     data() {
@@ -261,7 +279,6 @@
     },
     mounted() {
       // window.FollowsPass = this.FollowsPass;//关注
-      window.pictureUrl = this.pictureUrl;//图片跳转链接
     },
     methods: {
       changeNav(item, index) {//nav跳转
@@ -269,6 +286,7 @@
         this.navTag = item.tag;
         this.judgeId = item.id;
         this.fatiao = item.tag;
+        console.log(index)
       },
       getType() {//获取分类
         let options = new FormData();
@@ -276,10 +294,31 @@
         // options.append('token','6dfd23173ef55ba12ce6e6bfc04b9da24e1d45b3e88a163156bda33fc6351f8d15');
         this.$store.dispatch('getType', options)
           .then(data => {
+            let AddType=[
+              {
+                name:'首页',
+                tag:'IndexPc'
+              },
+              {
+                name:'法条',
+                tag:'LawPc'
+              },
+              {
+                name:'快速咨询',
+                tag:'DownloadPc'
+              },
+              {
+                name:'关于我们',
+                tag:'AboutPc'
+              }
+            ]
+            data.push(...AddType);
+
             for (let i = 0; i < data.length; i++) {
               data[i].isId = i;
             }
             this.navType = data;
+            console.log(this.navType)
           })
       },
       pictureJump(item) {//广告跳转对接
@@ -319,6 +358,7 @@
       },
       PersonalTopics(item) {//跳转个人律师专题页
         this.$router.push({name: 'LawyerSpecial', query: {lid: item.uid}});
+        sessionStorage.setItem('LawyerId',item.uid);
       },
       JumpDetail(obj) { //跳转律师详情页
         this.$router.push({name: 'LawyerFindArticleDetail', query: {obj}});
@@ -537,6 +577,7 @@
     left: 0;
     top: 0;
     z-index: 9999999;
+    background-color: #fff;
     border-bottom: 1px solid #ccc;
   }
 
@@ -544,7 +585,7 @@
     font-size: 34/@r;
     text-align: center;
     float: left;
-    width: 140/@r;
+    width: 160/@r;
     line-height: 80/@r;
     height: 80/@r;
     position: relative;
@@ -867,5 +908,19 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+  }
+  .openApp{
+    position:fixed;
+    bottom:20/@r;
+    left:2%;
+    background-color:#8c94ff;
+    color:#fff;
+    width:96%;
+    line-height:80/@r;
+    font-size:32/@r;
+    text-align:center;
+    -webkit-border-radius: 30/@r;
+    -moz-border-radius: 30/@r;
+    border-radius: 30/@r;
   }
 </style>

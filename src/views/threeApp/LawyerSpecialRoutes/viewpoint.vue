@@ -177,16 +177,11 @@
           },
           onScroll: function (mescroll, y) {//滚动判断nav定位
             _this.$nextTick(function () {
-              let nav = document.querySelector('nav')
+              let nav = document.querySelector('nav');
               if (y > 200) {
-                nav.style.position = 'fixed'
-                nav.style.zIndex = "9999"
+                nav.style.position = 'fixed';
+                nav.style.zIndex = "9999";
                 nav.style.top = '0';
-                nav.style.transform = "translateZ(0)";
-                nav.style.WebKitTransform = "translateZ(0)";
-                if(this.GetQueryString('isWebpage') == 1){
-                  nav.style.paddingTop = "0"
-                }
               } else {
                 nav.style.position = 'static';
                 nav.style.paddingTop = "0";
@@ -217,7 +212,8 @@
 
     },
     created() {
-      this.lid = JSON.parse(sessionStorage.getItem('specialInfo')).lid;
+      this.lid=JSON.parse(sessionStorage.getItem('LawyerId'));
+      // this.lid = JSON.parse(sessionStorage.getItem('specialInfo')).lid;
     },
     methods: {
       GetQueryString(name) { //截取?后想要的数据 lawyerId

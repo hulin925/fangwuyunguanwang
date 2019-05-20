@@ -18,8 +18,8 @@
 
       <h2>
         {{followObj.username}}
-        <i class="iconfont  icon-nan" v-if="WrapData.sex==0"></i>
-        <i class="iconfont  icon-nv" v-else-if="WrapData.sex==1"></i>
+        <i class="iconfont  icon-nan" v-if="followObj.sex==0"></i>
+        <i class="iconfont  icon-nv" v-else-if="followObj.sex==1"></i>
       </h2>
       <h3>认证：{{followObj.company}}</h3>
       <div class="nav">
@@ -69,15 +69,15 @@
 			'followObj'
     ]),
     created(){
-      this.$nextTick(()=>{
-        this.lid = JSON.parse(sessionStorage.getItem('specialInfo')).lid;
-        this.WrapInitData();
-      })
+      this.lid=JSON.parse(sessionStorage.getItem('LawyerId'));
+
+      // this.lid = JSON.parse(sessionStorage.getItem('specialInfo')).lid;
       for (let i = 0; i < this.WrapNavList.length; i++) {
         if (this.WrapNavList[i].routerName == this.$route.name) {
           this.$store.commit('setLawyerNav', i);
         }
       }
+      this.WrapInitData();
     },
     mounted(){
 

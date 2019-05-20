@@ -23,6 +23,12 @@ import video from '@/views/threeApp/LawyerSpecialRoutes/video'
 import service from '@/views/threeApp/LawyerSpecialRoutes/service'
 import consultation from '@/views/threeApp/LawyerSpecialRoutes/consultation'
 
+//官网PC项目
+import AboutPc from '@/views/threeApp/Pc/AboutPc'//首页
+import DownloadPc from '@/views/threeApp/Pc/DownloadPc'//法条
+import IndexPc from '@/views/threeApp/Pc/IndexPc'//快速咨询
+import LawPc from '@/views/threeApp/Pc/LawPc'//关于我们
+
 
 export default[
   //3.0律师发现页下的推荐
@@ -120,6 +126,30 @@ export default[
     path:'/myFans',
     name:'myFans',
     component:myFans
-  }
+  },
+  //首页pc
+  {
+    path:'/IndexPc',
+    name:'IndexPc',
+    component:IndexPc
+  },
+  //法条pc
+  {
+    path:'/LawPc',
+    name:'LawPc',
+    component:LawPc
+  },
+  //快速咨询pc
+  {
+    path:'/DownloadPc',
+    name:'DownloadPc',
+    component:DownloadPc
+  },
+  //关于我们pc
+  {
+    path:'/AboutPc',
+    name:'AboutPc',
+    component:AboutPc
+  },
 
 ]

@@ -11,8 +11,8 @@
         </dd>
       </dl>
       <div class="foot">
-        <span v-if="isAid==0">注：图文咨询价格 <i>￥{{data.price}}次</i></span>
-        <span v-else>注：<i>免费咨询！</i></span>
+        <span>注：图文咨询价格 <i>￥{{data.price}}次</i></span>
+        <!--<span v-else>注：<i>免费咨询！</i></span>-->
       </div>
     </div>
 
@@ -41,8 +41,6 @@
     },
     data() {
       return {
-        isAid:'',
-        isWebpage:'',//判断是否是h5网页打开
         isAssistance:'',//判断是否是援助
         iosObj:{},//存储ios传递参数
         lid: '',//律师id
@@ -59,11 +57,7 @@
       window.FollowsPassV=this.FollowsPassV;
     },
     created() {
-      this.isWebpage=this.GetQueryString('isWebpage');//判断是否是h5网页打开
-      // this.isAssistance=sessionStorage.getItem('isAssistance');//判断是否是援助
-      this.isAid=this.GetQueryString('isAid');//判断是否是援助
-      let initInfo = JSON.parse(sessionStorage.getItem('specialInfo'));//获取律师Id
-      this.lid = initInfo.lid;
+      this.lid = JSON.parse(sessionStorage.getItem('LawyerId'));
       this.$nextTick(() => {
         this.initData();
       })
@@ -76,10 +70,6 @@
         return null;
       },
       Consultation(){//咨询
-        if(this.isWebpage==1){
-          window.location.href="https://web.3fgj.com/sharePage/download1.html";
-          return;
-        }
         this.iosObj.price=this.price;
         this.iosObj.industry=this.industry[this.nowActive].industry;
         this.iosObj.gid=this.industry[this.nowActive].id;

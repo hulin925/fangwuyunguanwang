@@ -2,7 +2,7 @@
   <!--mescroll滚动区域的基本结构-->
   <div>
     <mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit">
-      <LawyerSpecialNav  v-model="isFixed"></LawyerSpecialNav>
+      <LawyerSpecialNav></LawyerSpecialNav>
       <div class="app">
 
         <ul class="list">
@@ -66,7 +66,6 @@
 			var _this = this;
       return {
         lid:'',
-				isFixed:false,
         pageLength: '',//列表条数
         data: {},
         list: [],//用户列表
@@ -114,7 +113,7 @@
       }
     },
     created() {
-      this.lid=JSON.parse(sessionStorage.getItem('specialInfo')).lid;
+      this.lid=JSON.parse(sessionStorage.getItem('LawyerId'));
     },
 		mounted(){
 		},
