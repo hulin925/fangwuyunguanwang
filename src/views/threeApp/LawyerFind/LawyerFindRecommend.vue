@@ -21,9 +21,6 @@
     <div v-else-if="fatiao=='IndexPc'">
       <IndexPc></IndexPc>
     </div>
-    <div v-else-if="fatiao=='LawPc'">
-      <LawPc></LawPc>
-    </div>
 
     <div v-else>
       <mescroll-vue :down="mescrollDown" :up="mescrollUp" @init="mescrollInit">
@@ -88,21 +85,19 @@
                   </div>
                   <div class="Img clearfix" :style="{width:item.num==4?'80%':'100%'}">
 
-                    <div class="ImgIcon" v-for="v,index in item.arr" v-if="item.num>1&&item.num!=4"
-                         @click.stop="ImgShow(item.arr,index)">
+                    <div class="ImgIcon" v-for="v,index in item.arr" v-if="item.num>1&&item.num!=4">
                       <div>
                         <img v-lazy="v" alt="">
                       </div>
                     </div>
 
-                    <div class="ImgIcon" v-for="v,index in item.arr" v-if="item.num==4"
-                         @click.stop="ImgShow(item.arr,index)">
+                    <div class="ImgIcon" v-for="v,index in item.arr" v-if="item.num==4">
                       <div>
                         <img v-lazy="v" alt="">
                       </div>
                     </div>
 
-                    <div class="firstImg" v-if="item.num==1" @click.stop="ImgShow(new Array(item.arr[0]),index)">
+                    <div class="firstImg" v-if="item.num==1">
                       <div>
                         <img v-lazy="item.arr[0]" alt="">
                       </div>
@@ -118,22 +113,19 @@
                   <div class="Img clearfix" :style="{width:item.AndroidNumber==4?'80%':'100%'}">
 
                     <div class="ImgIcon" v-for="v,index in item.thumbnail"
-                         v-if="item.AndroidNumber>1&&item.AndroidNumber!=4"
-                         @click.stop="ImgShow(item.thumbnail,index)">
+                         v-if="item.AndroidNumber>1&&item.AndroidNumber!=4">
                       <div>
                         <img v-lazy="v" alt="">
                       </div>
                     </div>
 
-                    <div class="ImgIcon" v-for="v,index in item.thumbnail" v-if="item.AndroidNumber==4"
-                         @click.stop="ImgShow(item.thumbnail,index)">
+                    <div class="ImgIcon" v-for="v,index in item.thumbnail" v-if="item.AndroidNumber==4">
                       <div>
                         <img v-lazy="v" alt="">
                       </div>
                     </div>
 
-                    <div class="firstImg" v-if="item.AndroidNumber==1"
-                         @click.stop="ImgShow(new Array(item.thumbnail[0]),index)">
+                    <div class="firstImg" v-if="item.AndroidNumber==1">
                       <div>
                         <img v-lazy="item.thumbnail[0]" alt="">
                       </div>
@@ -286,7 +278,6 @@
         this.navTag = item.tag;
         this.judgeId = item.id;
         this.fatiao = item.tag;
-        console.log(index)
       },
       getType() {//获取分类
         let options = new FormData();
@@ -300,10 +291,6 @@
                 tag:'IndexPc'
               },
               {
-                name:'法条',
-                tag:'LawPc'
-              },
-              {
                 name:'快速咨询',
                 tag:'DownloadPc'
               },
@@ -312,7 +299,7 @@
                 tag:'AboutPc'
               }
             ]
-            data.push(...AddType);
+            data.unshift(...AddType);
 
             for (let i = 0; i < data.length; i++) {
               data[i].isId = i;
@@ -332,24 +319,6 @@
             this.AdvertisingData = data;
           })
       },
-      androidVideo(item) {//android处理视频播放
-        let obj = {};
-        obj.videos = item;
-        window.AndroidMethod.androidVideo(JSON.stringify(obj));//android 传递参数
-      },
-      ImgShow(arr, index) {//图片放大处理
-        this.ImgPass.dataImg = arr;
-        this.ImgPass.index = index;
-        // ImgShow(this.ImgPass);//ios传递参数
-
-        if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
-          //Ios
-          ImgShow(this.ImgPass);//ios传递参数
-        } else if (/(Android)/i.test(navigator.userAgent)) {
-          //Android终端
-          window.AndroidMethod.ImgShow(JSON.stringify(this.ImgPass));//android 传递参数
-        }
-      },
       GetQueryString(name) { //截取?后想要的数据 lawyerId
         var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
         var r = window.location.search.substr(1).match(reg);
@@ -362,6 +331,7 @@
       },
       JumpDetail(obj) { //跳转律师详情页
         this.$router.push({name: 'LawyerFindArticleDetail', query: {obj}});
+        sessionStorage.setItem('detailsId',JSON.stringify(obj));
       },
       // mescroll组件初始化的回调,可获取到mescroll对象
       mescrollInit(mescroll) {
@@ -911,6 +881,7 @@
   }
   .openApp{
     position:fixed;
+    z-index:99999;
     bottom:20/@r;
     left:2%;
     background-color:#8c94ff;

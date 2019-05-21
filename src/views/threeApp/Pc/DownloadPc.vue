@@ -7,8 +7,8 @@
             <p class="block-1-content">大咖云集 万家律所</p>
             <div class="down">
               <div class="btns">
-                  <div class="ios"><a :href="ios"><img src="../../../assets/img/apple.png" /></a></div>
-                  <div class="android"><a :href="android" download="芯汇法务云"><img src="../../../assets/img/android.png" /></a></div>
+                  <div class="ios" @click.stop="$downloadIos"><img src="../../../assets/img/apple.png" /></div>
+                  <div class="android" @click.stop="$downloadAndroid"><img src="../../../assets/img/android.png" /></div>
               </div>
               <div class="QR">
                 <div class="yhd"><qrcode class="qrcode" :value="android" :options="{ size:120,padding:2 }"></qrcode><p>法务云用户端</p></div>

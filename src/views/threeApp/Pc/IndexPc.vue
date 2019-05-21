@@ -53,7 +53,7 @@
             <h1 class="block-5-tit"><span>芯汇法务云</span> <span>您身边的法律专家</span></h1>
             <p class="block-5-content">大咖云集 万家律所</p>
             <div class="btns">
-                <button class="download-app">下载APP</button>
+                <button class="download-app" @click.stop="download">下载APP</button>
                 <button class="detail">了解详情</button>
             </div>
             <div class="block-bottom">
@@ -123,7 +123,7 @@ export default {
 
 .main-con {
   text-align: left;
-  font-size: 30/@r;
+  font-size: 34/@r;
   color: #fff;
   margin-top: 40px;
   opacity: 0.59;
@@ -366,6 +366,7 @@ export default {
 .btns {
   text-align: left;
   margin-top: 100/@r;
+  margin-left:40/@r;
   white-space: nowrap;
 }
 

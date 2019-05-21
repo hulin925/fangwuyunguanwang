@@ -32,7 +32,8 @@
       }
     },
     created() {
-      this.lid=this.$route.query.lid;
+      this.lid=JSON.parse(sessionStorage.getItem('LawyerId'));
+      // this.lid=this.$route.query.lid;
       this.WrapInitData();
     },
     mounted() {

@@ -32,7 +32,7 @@
             <h1 class="block-3-tit"><span>芯汇法务云</span> <span>您身边的法律专家</span></h1>
             <p class="block-3-content">大咖云集 万家律所</p>
             <div class="btns">
-                <button class="download-app"><a :href="android" download="芯汇法务云">下载APP</a></button>
+                <button class="download-app" @click.stop="download">下载APP</button>
                 <button class="detail">了解详情</button>
             </div>
             <div class="block-bottom">
@@ -109,12 +109,12 @@ export default {
 }
 
 .cloud1 {
-  top: 5%;
+  top: 1%;
   left: 5%;
 }
 
 .cloud2 {
-  bottom: 5%;
+  bottom: 1%;
   right: 5%;
 }
 
@@ -122,7 +122,7 @@ export default {
 .cloud2 {
   z-index: 1;
   position: absolute;
-  width: 20rem;
+  width: 480/@r;
 }
 
 .cloud1 img,
@@ -143,7 +143,7 @@ export default {
   font-size: 60/@r;
   /* font-weight: bold; */
   color: #666;
-  margin-bottom: 120/@r;
+  margin-bottom: 60/@r;
 }
 
 .block-1-content {
@@ -153,7 +153,7 @@ export default {
 }
 
 .block-1-content li span {
-  font-size: 32/@r;
+  font-size: 30/@r;
   font-family: Helvetica, Tahoma, Arial, "PingFang SC", "Hiragino Sans GB",
     "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
   vertical-align: middle;
@@ -212,17 +212,17 @@ export default {
 }
 
 .block-2-title {
-  font-size: 2.5rem;
+  font-size: 50/@r;
   /* color: #666; */
   /* font-weight: bold; */
-  margin: 5px 0;
+  margin: 10/@r 0;
   text-align: center;
   white-space: nowrap;
 }
 
 .block-2-title-eg {
-  font-size: 2rem;
-  margin: 5px 0;
+  font-size: 40/@r;
+  margin: 10/@r 0;
   text-align: center;
   white-space: nowrap;
 }
@@ -231,7 +231,7 @@ export default {
   font-size: 1.2rem;
   line-height: 2rem;
   text-align: justify;
-  text-indent: 2rem;
+  text-indent: 2em;
 }
 
 .main-3 {
@@ -252,7 +252,7 @@ export default {
 .block-3-tit {
   font-family: Helvetica, Tahoma, Arial, "PingFang SC", "Hiragino Sans GB",
     "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
-  font-size: 3rem;
+  font-size: 60/@r;
   font-weight: normal;
   color: #333;
   text-align: left;
@@ -260,27 +260,28 @@ export default {
 }
 
 .block-3-content {
-  font-size: 2rem;
+  font-size: 40/@r;
   text-align: left;
   color: #333;
-  margin-top: 3rem;
+  margin-top: 60/@r;
   white-space: nowrap;
 }
 
 .btns {
   text-align: left;
-  margin-top: 5rem;
+  margin-top: 150/@r;
+  margin-left:40/@r;
   white-space: nowrap;
 }
 
 .btns button {
-  width: 10rem;
-  height: 3rem;
-  margin-right: 20px;
-  font-size: 1.5rem;
+  width: 240/@r;
+  height: 70/@r;
+  margin-right: 40/@r;
+  font-size: 30/@r;
   color: #fff;
   outline: none;
-  border-radius: 30px;
+  border-radius: 70/@r;
   cursor: pointer;
 }
 .btns a {
@@ -303,22 +304,23 @@ export default {
 .block-bottom {
   display: flex;
   flex-direction: row;
-  margin-top: 5rem;
+  margin-top: 100/@r;
   text-align: left;
 }
 
 .block-item {
-  padding-right: 5rem;
+  padding-right: 80/@r;
 }
 
 .block-item-title {
-  font-size: 1.5rem;
+  text-align: center;
+  font-size: 32/@r;
   color: #333;
   white-space: nowrap;
 }
 
 .block-item-content {
-  margin-top: 1.125rem;
+  margin-top:30/@r;
   white-space: nowrap;
 }
 
@@ -353,13 +355,13 @@ export default {
     padding: 30px;
   }
   .block-2-content {
-    font-size: 1.5rem;
-    line-height: 3rem;
+    font-size: 30/@r;
+    line-height: 70/@r;
   }
   .block-1-content li i {
-    margin: 20px 25px 20px 0;
-    width: 20px;
-    height: 20px;
+    margin: 40/@r 50/@r 40/@r 0;
+    width: 60/@r;
+    height: 60/@r;
   }
   .block-2-title,
   .block-2-title-eg {

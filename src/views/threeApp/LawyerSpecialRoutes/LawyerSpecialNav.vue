@@ -4,9 +4,6 @@
       <div class="goBack" @click="specialBack()">
         <img src="../../../assets/img/goback.png" alt="">
       </div>
-      <div class="share" @click="share()">
-        <i class="iconfont  icon-fenxiang2"></i>
-      </div>
       <div class="headerIcon">
         <img :src="WrapData.faces" alt="">
       </div>
@@ -86,15 +83,6 @@
       myFans(){//我的粉丝
         this.$router.push({name:'myFans'})
       },
-      share(){//分享
-        if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
-          //Ios
-          Share();//ios 方法
-        } else if (/(Android)/i.test(navigator.userAgent)) {
-          //Android终端
-          window.AndroidMethod.Share();//android方法
-        }
-      },
       specialBack(){//返回键
         this.$router.push({name:'LawyerFindRecommend'});
       },
@@ -171,15 +159,6 @@
     left: 16/@r;
     top: 0;
     padding: 20/@r;
-  }
-  .share {
-    position: absolute;
-    right: 16/@r;
-    top: 0;
-    padding: 20/@r 30/@r 30/@r;
-  }
-  .share .icon-fenxiang2{
-    font-size:42/@r;
   }
   .goBack img {
     width: 48/@r;

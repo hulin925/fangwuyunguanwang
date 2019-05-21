@@ -36,21 +36,19 @@
                 <div v-html="item.content"></div>
               </div>
               <div class="Img clearfix" :style="{width: item.num==4?'90%':'100%'}">
-                <div class="ImgIcon" v-for="itemImg,index in item.arr" v-if="item.num>1&&item.num!=4"
-                     @click.stop="ImgShow(item.arr,index)">
+                <div class="ImgIcon" v-for="itemImg,index in item.arr" v-if="item.num>1&&item.num!=4">
                   <div>
                     <img v-lazy="itemImg" alt="">
                   </div>
                 </div>
 
-                <div class="ImgIcon" v-for="everyImg,index in item.arr" v-if="item.num==4"
-                     @click.stop="ImgShow(item.arr,index)">
+                <div class="ImgIcon" v-for="everyImg,index in item.arr" v-if="item.num==4">
                   <div>
                     <img v-lazy="everyImg" alt="">
                   </div>
                 </div>
 
-                <div class="firstImg" v-else-if="item.num==1" @click.stop="ImgShow(new Array(item.arr[0]),index)">
+                <div class="firstImg" v-else-if="item.num==1">
                   <div>
                     <img v-lazy="item.arr[0]" alt="">
                   </div>
@@ -65,7 +63,7 @@
               </div>
 
               <div class="clearfix" v-if="item.AndroidNum>1&&item.AndroidNum!=4">
-                <div class="ImgIcon" v-for="v,index in item.thumbnail" @click.stop="ImgShow(item.thumbnail,index)">
+                <div class="ImgIcon" v-for="v,index in item.thumbnail">
                   <div>
                     <img v-lazy="v" alt="">
                   </div>
@@ -73,7 +71,7 @@
               </div>
 
               <div class="clearfix" v-if="item.AndroidNum==4">
-                <div class="ImgIcon" v-for="v,index in item.thumbnail" @click.stop="ImgShow(item.thumbnail,index)">
+                <div class="ImgIcon" v-for="v,index in item.thumbnail">
                   <div>
                     <img v-lazy="v" alt="">
                   </div>
@@ -81,7 +79,7 @@
               </div>
 
               <div class="clearfix" v-else-if="item.AndroidNum==1">
-                <div class="firstImg" @click.stop="ImgShow(new Array(item.thumbnail[0]),index)">
+                <div class="firstImg">
                   <div>
                     <img v-lazy="item.thumbnail[0]" alt="">
                   </div>
@@ -141,11 +139,6 @@
   import {PopupPicker, Group,Toast} from 'vux'
   import MescrollVue from 'mescroll.js/mescroll.vue'
   import LawyerSpecialNav from './LawyerSpecialNav.vue'
-  import {
-    ArticleViewpoint,//跳转详情方法ios
-    FabulousViewpoint,//点赞方法
-    ImgShow,//图片处理
-  } from '@/assets/public.js'
 
   export default {
     name: "viewpoint",
@@ -162,9 +155,7 @@
         noData:false,
         showStart: false,
         noneData: false,
-        isWebpage: '',//判断是否是h5网页打开
         ImgPass: {},//ios图片传递
-        obj: {},//ios事件传递
         lid: '',//律师Id
         mescroll: null, // mescroll实例对象
         mescrollDown: {}, //下拉刷新的配置. (如果下拉刷新和上拉加载处理的逻辑是一样的,则mescrollDown可不用写了)
@@ -222,48 +213,9 @@
         if (r != null) return unescape(r[2]);
         return null;
       },
-      ImgShow(arr, index) {//图片传递
-        this.ImgPass.dataImg = arr;
-        this.ImgPass.index = index;
-        // ImgShow(this.ImgPass);//ios 传递参数
-
-        if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
-          //Ios
-          ImgShow(this.ImgPass);//ios 传递参数
-        } else if (/(Android)/i.test(navigator.userAgent)) {
-          //Android终端
-          window.AndroidMethod.ImgShow(JSON.stringify(this.ImgPass));//android 传递参数
-        }
-      },
       JumpDetails(obj) {//跳转律师详情页
-        let id=obj.id;
-        let classify=obj.classify;
-        if (this.isWebpage == 1) {
-          window.location.href = "https://xhfwy3.sanhedao.com.cn/dist3/?id="+id+"&classify="+classify+"&isShowFollow=1&uid=1#/Webpage";
-          return;
-        }
-        this.obj.id = obj.id;
-        this.obj.classify = obj.classify;
-        // ArticleViewpoint(this.obj);//ios 传递参数
-        // window.AndroidToHtml.ArticleViewpoint(JSON.stringify(this.obj));//android 传递参数
-
-        if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
-          //Ios
-          ArticleViewpoint(this.obj);//ios 传递参数
-        } else if (/(Android)/i.test(navigator.userAgent)) {
-          //Android终端
-          window.AndroidMethod.ArticleViewpoint(JSON.stringify(this.obj));//android 传递参数
-        }
-
-        // let options = new FormData();
-        // options.append('id',68);
-        // // options.append('uid',1006);
-        // options.append('classify',6);
-        // options.append('page',1);
-        // this.$store.dispatch('SpecialGetdetail',options)
-        //   .then(data=>{
-        //     console.log(data)
-        //   })
+        this.$router.push({name: 'LawyerFindArticleDetail', query: {obj}});
+        sessionStorage.setItem('detailsId',JSON.stringify(obj));
       },
       // mescroll组件初始化的回调,可获取到mescroll对象
       mescrollInit(mescroll) {
@@ -372,16 +324,6 @@
         });
       },
       Fabulous(item) { //点赞接口
-        if (this.isWebpage == 1) {
-          window.location.href = "https://web.3fgj.com/sharePage/download1.html";
-          return;
-        }
-        this.obj.lid = item.uid;
-        this.obj.fid = item.id;
-        this.obj.type = item.classify;
-        // FabulousViewpoint(this.obj);//ios 参数传递
-        // window.AndroidToHtml.FabulousViewpoint(JSON.stringify(this.obj));//android 传递参数
-
         // let options = new FormData();
         // options.append('uid','1006');
         // options.append('lid', item.uid);

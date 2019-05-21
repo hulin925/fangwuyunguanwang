@@ -4,9 +4,8 @@
       <section>
         <ul class="list">
           <li>
-            <div class="title clearfix">
-
-              <div class="left" @click.stop="PersonalTopics(data)">
+            <div class="title clearfix"  @click.stop="PersonalTopics(data)">
+              <div class="left">
                 <img :src="lidImg" alt="">
               </div>
 
@@ -15,7 +14,7 @@
                 <img src="../../../assets/img/level.png" alt="" v-else class="GradeTwo">
               </div>
 
-              <div class="center" @click.stop="PersonalTopics(data)">
+              <div class="center">
                 <h2 :class="{GradeColor:data.cert_type != 1}">{{data.username}}</h2>
                 <p v-if="data.add_time!=0">{{data.add_time}}</p>
                 <p v-else>{{data.company}}</p>
@@ -124,6 +123,10 @@
       </toast>
     </div>
 
+    <div class="openApp" @click.stop="download">
+      <span>打开APP查看更多详情</span>
+    </div>
+
   </div>
 </template>
 
@@ -181,9 +184,11 @@
     mounted() {
     },
     created() {
-      this.lid = this.$route.query.obj.uid;
-      this.id = this.$route.query.obj.id;
-      this.classify = this.$route.query.obj.classify;
+      let a =JSON.parse(sessionStorage.getItem('detailsId'));
+      console.log(a)
+      this.lid = a.uid;
+      this.id = a.id;
+      this.classify = a.classify;
       console.log(this.$route)
     },
     methods: {
@@ -215,7 +220,8 @@
         }
       },
       PersonalTopics(item) {//跳转个人律师专题页
-        this.obj.lid = item.uid;
+        this.$router.push({name: 'LawyerSpecial', query: {lid: item.uid}});
+        sessionStorage.setItem('LawyerId',item.uid);
       },
       GetQueryString(name) { //截取?后想要的数据 lawyerId
         var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
@@ -237,7 +243,6 @@
         options.append('page', page.num);
         this.$store.dispatch('LawyerFindArticleDetail', options)
           .then(data => {
-            console.log(data)
             data.videos = data.weburl + data.path;//拼接后的video
             data.cover = data.weburl + data.thumbnail;//拼接后的封面
             this.weburl = data.weburl;
@@ -643,5 +648,21 @@
 
   .statement p {
     line-height: 40/@r;
+  }
+
+  .openApp{
+    position:fixed;
+    z-index:99999;
+    bottom:20/@r;
+    left:2%;
+    background-color:#8c94ff;
+    color:#fff;
+    width:96%;
+    line-height:80/@r;
+    font-size:32/@r;
+    text-align:center;
+    -webkit-border-radius: 30/@r;
+    -moz-border-radius: 30/@r;
+    border-radius: 30/@r;
   }
 </style>

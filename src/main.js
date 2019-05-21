@@ -35,6 +35,15 @@ Vue.prototype.download = function (){
     window.location.href = "http://android.myapp.com/myapp/detail.htm?apkName=com.w2893097678.zaz";
   }
 }
+Vue.prototype.$downloadIos = function (){
+  // window.location.href="https://web.3fgj.com/sharePage/download1.html";
+  //   window.location.href = "https://itunes.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=1420408499&mt=8";
+    window.location.href = "https://itunes.apple.com/cn/app/%E8%8A%AF%E6%B1%87%E6%B3%95%E5%8A%A1%E4%BA%91/id1420408499?l=zh&ls=1&mt=8";
+}
+Vue.prototype.$downloadAndroid = function (){
+  // window.location.href="https://web.3fgj.com/sharePage/download1.html";
+    window.location.href = "http://android.myapp.com/myapp/detail.htm?apkName=com.w2893097678.zaz";
+}
 
 /* eslint-disable no-new */
 new Vue({

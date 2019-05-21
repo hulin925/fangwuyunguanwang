@@ -37,7 +37,7 @@
               <!--</video>-->
             <!--</div>-->
 
-            <div v-if="item.local==0" @click.stop="androidVideo(item.videos)">
+            <div v-if="item.local==0">
               <video
                 width="320" height="240" :poster="item.cover" controls="controls" webkit-playsinline="true"
                 x5-video-player-type="h5"
@@ -45,7 +45,7 @@
                 <source :src="item.videos" type="video/mp4">
               </video>
             </div>
-            <div v-else-if="item.local==1" @click.stop="androidVideo(item.path)">
+            <div v-else-if="item.local==1">
               <video
                 width="320" height="240" :poster="item.cover" controls="controls" webkit-playsinline="true"
                 x5-video-player-type="h5"
@@ -172,11 +172,6 @@
       this.lid=JSON.parse(sessionStorage.getItem('LawyerId'));
     },
     methods: {
-      androidVideo(item){//android处理视频播放
-        let obj={};
-        obj.videos=item;
-        window.AndroidMethod.androidVideo(JSON.stringify(obj));//android 传递参数
-      },
       GetQueryString(name) { //截取?后想要的数据 lawyerId
         var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
         var r = window.location.search.substr(1).match(reg);
@@ -184,18 +179,8 @@
         return null;
       },
       JumpDetails(obj) {//跳转律师详情页
-        this.obj.id = obj.id;
-        this.obj.classify = obj.classify;
-        // ArticleVideo(this.obj);ios 参数传递
-        // window.AndroidToHtml.ArticleVideo(JSON.stringify(this.obj));//android 传递参数
-
-        if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
-          //Ios
-          ArticleVideo(this.obj);//ios 传递参数
-        } else if (/(Android)/i.test(navigator.userAgent)) {
-          //Android终端
-          window.AndroidMethod.ArticleVideo(JSON.stringify(this.obj));//android 传递参数
-        }
+        this.$router.push({name: 'LawyerFindArticleDetail', query: {obj}});
+        sessionStorage.setItem('detailsId',JSON.stringify(obj));
       },
       // mescroll组件初始化的回调,可获取到mescroll对象
       mescrollInit(mescroll) {
@@ -228,33 +213,8 @@
             let arr = data.list;
             // 如果是第一页需手动制空列表
             if (page.num === 1) this.dataList = [];
-
-            // //处理点赞
-            // if (arr.length) {
-            //   let last = arr[arr.length - 1];
-            //   let listLast = this.dataList[this.dataList.length - 1] ? this.dataList[this.dataList.length - 1] : {};
-            //   if (!listLast.id) {
-            //     listLast.id = -111111
-            //   }
-            //   if (listLast.id === last.id) {
-            //     for(var i=0;i<this.dataList.length;i++){
-            //       for(var j=0;j<arr.length;j++){
-            //         if(this.dataList[i].id==arr[j].id&&arr[j].histort_reward_count!=this.dataList[i].histort_reward_count){
-            //           this.dataList[i].histort_reward_count = arr[j].histort_reward_count
-            //           this.dataList[i].iszan = arr[j].iszan
-            //         }else{
-            //           console.log(1)
-            //         }
-            //       }
-            //     }
-            //   } else {
-            //     this.dataList = this.dataList.concat(arr);
-            //   }
-            // }
-
             // 把请求到的数据添加到列表
             this.dataList = this.dataList.concat(arr);
-
             // 数据渲染成功后,隐藏下拉刷新的状态
             this.$nextTick(() => {
               mescroll.endSuccess(arr.length);
@@ -274,14 +234,6 @@
                   if (j!=index) videos[j].pause();
                 }
               }
-              // var vdo = document.querySelectorAll('video');
-              // vdo.forEach((item) => {
-              //   item.pause();
-              //   item.onclick = function () {
-              //     this.play();
-              //   }
-              // })
-              console.log(this.dataList)
             })
             // this.$store.commit('hidenLoading');
           }, err => {
@@ -292,41 +244,7 @@
           mescroll.endErr()
         });
       },
-      // FabulousPassVideo(obj) { //点赞接口,ios传递数据改变页面
-      //   let now = JSON.parse(obj);
-      //   let options = new FormData();
-      //   options.append('uid', now.uid);//1006
-      //   options.append('lid', now.lid);
-      //   options.append('fid', now.fid);
-      //   options.append('type', now.type);
-      //   options.append('token', now.token);//6dfd23173ef55ba12ce6e6bfc04b9da24e1d45b3e88a163156bda33fc6351f8d
-      //   this.$store.dispatch('Fabulous', options)
-      //     .then(data => {
-      //       this.dataList = this.dataList.map(item => {
-      //         if (item.id == obj.id) {
-      //           item.iszan = data.data.flag;
-      //           if (obj.iszan == 1) {
-      //             item.histort_reward_count = Number(item.histort_reward_count) + 1
-      //           } else {
-      //             item.histort_reward_count = Number(item.histort_reward_count) - 1
-      //           }
-      //           return item;
-      //         }
-      //         return item;
-      //       })
-      //       // this.initData({
-      //       //   num: this.page
-      //       // }, this.mescroll)
-      //       // this.mescroll.resetUpScroll()
-      //     })
-      // },
       Fabulous(item) { //点赞接口
-        this.obj.lid = item.uid;
-        this.obj.fid = item.id;
-        this.obj.type = item.classify;
-        // FabulousVideo(this.obj);//ios 参数传递
-        // window.AndroidToHtml.FabulousVideo(JSON.stringify(this.obj));//android 传递参数
-
         // let options = new FormData();
         // options.append('uid','1006');
         // options.append('lid', item.uid);
@@ -349,64 +267,6 @@
         //     })
         //     // this.mescroll.resetUpScroll()
         //   })
-
-
-        if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
-          //Ios
-          FabulousVideo(this.obj);//ios 传递参数
-
-          if(this.GetQueryString('uid')!=null){
-            // alert(this.GetQueryString('uid')+','+this.GetQueryString('token'))
-            let options = new FormData();
-            options.append('uid',this.GetQueryString('uid'));
-            options.append('lid', item.uid);
-            options.append('fid', item.id);//文章id
-            options.append('type', item.classify);//文章类型
-            options.append('token',this.GetQueryString('token'));
-            this.$store.dispatch('Fabulous', options)
-              .then(data => {
-                if(data.data.flag==1){
-                  this.showStart=true;
-                }
-                this.dataList=this.dataList.map(obj=>{
-                  if(item.id==obj.id&&item.classify==obj.classify){
-                    obj.iszan=data.data.flag;
-                    obj.histort_reward_count = data.data.zannum;
-                  }
-                  return obj;
-                })
-              })
-          }
-
-        } else if (/(Android)/i.test(navigator.userAgent)) {
-          //Android终端
-          // window.AndroidToHtml.FabulousVideo(JSON.stringify(this.obj));//android 传递参数
-          var abc = window.AndroidMethod.FabulousViewpoint(JSON.stringify(this.obj))
-          var now = JSON.parse(abc);
-          if (now.login == 1) {
-            let options = new FormData();
-            options.append('uid', now.uid);
-            options.append('lid', item.uid);
-            options.append('fid', item.id);//文章id
-            options.append('type', item.classify);//文章类型
-            options.append('token', now.token);
-            this.$store.dispatch('Fabulous', options)
-              .then(data => {
-                if(data.data.flag==1){
-                  this.showStart=true;
-                }
-                this.dataList = this.dataList.map(obj => {
-                  if (item.id == obj.id && item.classify == obj.classify) {
-                    obj.iszan = data.data.flag;
-                    obj.histort_reward_count = data.data.zannum;
-                  }
-                  return obj;
-                })
-              })
-          }
-
-
-        }
       },
 
 
