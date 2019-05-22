@@ -131,6 +131,7 @@ export default {
 }
 
 .main-1-no {
+  text-align:center;
   font-size: 1rem;
   line-height: 2.8rem;
   color: #fff;
@@ -173,6 +174,7 @@ export default {
 }
 
 .main-2-no {
+  text-align:center;
   font-size: 1rem;
   line-height: 2.8rem;
   color: #fff;

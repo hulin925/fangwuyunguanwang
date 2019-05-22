@@ -9,6 +9,8 @@
       </div>
     </nav>
 
+    <div>
+
     <div v-if="fatiao=='fatiao'">
       <LawyerFindFatiao></LawyerFindFatiao>
     </div>
@@ -23,7 +25,7 @@
     </div>
 
     <div v-else>
-      <mescroll-vue :down="mescrollDown" :up="mescrollUp" @init="mescrollInit">
+      <mescroll-vue :down="mescrollDown" :up="mescrollUp" @init="mescrollInit"  :class="this.$isMobile()?'':'isPc'">
 
         <div class="noneData" v-if="noneData">
           <img src="../../../assets/img/follow.png" alt="">
@@ -187,9 +189,12 @@
     </div>
 
 
-    <div class="openApp" @click.stop="download">
+    <div class="openApp" @click.stop="download" v-if="this.$isMobile()">
       <span>打开APP查看更多详情</span>
     </div>
+
+    </div>
+
 
   </div>
 </template>
@@ -278,6 +283,7 @@
         this.navTag = item.tag;
         this.judgeId = item.id;
         this.fatiao = item.tag;
+        this.mescroll.resetUpScroll();
       },
       getType() {//获取分类
         let options = new FormData();
@@ -299,13 +305,12 @@
                 tag:'AboutPc'
               }
             ]
-            data.unshift(...AddType);
+            data.push(...AddType);
 
             for (let i = 0; i < data.length; i++) {
               data[i].isId = i;
             }
             this.navType = data;
-            console.log(this.navType)
           })
       },
       pictureJump(item) {//广告跳转对接
@@ -330,8 +335,17 @@
         sessionStorage.setItem('LawyerId',item.uid);
       },
       JumpDetail(obj) { //跳转律师详情页
-        this.$router.push({name: 'LawyerFindArticleDetail', query: {obj}});
         sessionStorage.setItem('detailsId',JSON.stringify(obj));
+
+        if(this.$isMobile()){
+          this.$router.push({name: 'LawyerFindArticleDetail', query: {obj}});
+        }else{
+          let routeData = this.$router.resolve({
+            path: "/LawyerFindArticleDetail"
+          });
+          window.open(routeData.href, '_blank');
+        }
+
       },
       // mescroll组件初始化的回调,可获取到mescroll对象
       mescrollInit(mescroll) {
@@ -539,6 +553,25 @@
 <style scoped lang="less" type="text/less">
   @r: 30rem;
 
+  .isPc{
+    width:700px;
+    /*overflow: hidden;*/
+    left:300px;
+  }
+  .isPc .ImgIcon{
+    width:160px;
+    height:160px;
+    padding:10px;
+  }
+  .isPc .Img{
+    width:60%;
+  }
+  .isPc .firstImg{
+    width:60%;
+    /*height:200px;*/
+  }
+
+
   nav {
     width: 100%;
     height: 82/@r;
@@ -555,7 +588,7 @@
     font-size: 34/@r;
     text-align: center;
     float: left;
-    width: 160/@r;
+    width: 140/@r;
     line-height: 80/@r;
     height: 80/@r;
     position: relative;

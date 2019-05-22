@@ -31,7 +31,16 @@
 		computed:mapGetters([
 			'isLoading',
       // 'isZan'
-		])
+		]),
+    data(){
+		  return{
+
+      }
+    },
+    created(){
+		  console.log(this.$isMobile(),22222)
+    }
+
 	}
 </script>
 

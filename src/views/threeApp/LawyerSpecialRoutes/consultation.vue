@@ -1,7 +1,7 @@
 <template>
   <div>
     <LawyerSpecialNav></LawyerSpecialNav>
-    <div class="wrap">
+    <div class="wrap"  :class="this.$isMobile()?'':'isPc'">
 
       <dl>
         <dt>请选择咨询类型</dt>

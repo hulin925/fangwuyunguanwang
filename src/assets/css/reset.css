@@ -109,5 +109,12 @@ img {
   background-color: transparent !important;
 }
 
+/*判断是否是pc端打开*/
+.isPc{
+  width:700px;
+  /*overflow: hidden;*/
+  left:300px;
+}
+
 
 

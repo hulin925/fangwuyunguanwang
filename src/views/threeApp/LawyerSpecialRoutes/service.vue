@@ -1,7 +1,7 @@
 <template>
   <div>
     <LawyerSpecialNav></LawyerSpecialNav>
-    <div class="app">
+    <div class="app"  :class="this.$isMobile()?'':'isPc'">
       <group>
         <popup-picker
           v-if="!switch6"

@@ -1,7 +1,7 @@
 +<template>
   <!--mescroll滚动区域的基本结构-->
   <div>
-    <mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit">
+    <mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit"  :class="this.$isMobile()?'':'isPc'">
       <LawyerSpecialNav></LawyerSpecialNav>
       <div class="app">
 
@@ -178,6 +178,12 @@
 
 <style scoped lang="less">
   @r: 30rem;
+
+  .isPc{
+    width:700px;
+    overflow: hidden;
+    left:300px;
+  }
   /*通过fixed固定mescroll的高度*/
   .mescroll {
     position:absolute;

@@ -1,12 +1,12 @@
 <template>
   <div class="app">
 
-
     <section>
       <router-view/>
     </section>
+
     <!--关注-->
-    <div class="mainFooter" @click.stop="download">
+    <div class="mainFooter" @click.stop="download" v-if="this.$isMobile()">
       <span v-if="followObj.isguanzhu==0">+ 关注</span>
       <span v-else>取消关注</span>
     </div>
@@ -76,6 +76,7 @@
 
 <style scoped lang="less">
   @r: 30rem;
+
   .app {
     color: #333;
     background-color: #fff;

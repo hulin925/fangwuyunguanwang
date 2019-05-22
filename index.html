@@ -43,8 +43,22 @@
   <script>
 
     (function(){
-      var html=document.querySelector('html');
-      html.style.fontSize=html.clientWidth/25+'px';
+
+      function isMobile(){
+        let flag = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i);
+        return flag;
+      }
+      if(/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)){
+        var html=document.querySelector('html');
+        html.style.fontSize=html.clientWidth/25+'px';
+      }else{
+        var html=document.querySelector('html');
+        html.style.fontSize=16+'px';
+      }
+
+      // var html=document.querySelector('html');
+      // html.style.fontSize=html.clientWidth/25+'px';
+
     })();
   </script>
   <body>

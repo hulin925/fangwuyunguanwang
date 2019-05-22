@@ -1,18 +1,9 @@
-//2.0数据
-// import Find from '@/views/twoApp/Find'
-// import LawDetails from '@/views/twoApp/LawDetails'
-// import SearchLaw from '@/views/twoApp/SearchLaw'
 
 //3.0数据
-import aboutThree from '@/views/threeApp/aboutThree'//关于我们
-
 import LawyerFindRecommend from '@/views/threeApp/LawyerFind/LawyerFindRecommend'//发现页下的推荐
 import LawyerFindArticleDetail from '@/views/threeApp/LawyerFind/LawyerFindArticleDetail'//发现页下的文章详情
-import Webpage from '@/views/threeApp/Webpage'//发现页下的文章详情 h5网页打开的
 import LawyerFindFatiao from '@/views/threeApp/LawyerFind/LawyerFindFatiao'//发现页下的法条
 import LawyerFindLawDetails from '@/views/threeApp/LawyerFind/LawyerFindLawDetails'//发现页下的法条详情列表
-
-
 import LawyerSpecial from '@/views/threeApp/LawyerSpecial'//律师专题页
 import myFans from '@/views/threeApp/LawyerSpecialRoutes/myFans'//我的粉丝
 //LawyerSpecial下的子路由
@@ -28,7 +19,6 @@ import AboutPc from '@/views/threeApp/Pc/AboutPc'//首页
 import DownloadPc from '@/views/threeApp/Pc/DownloadPc'//法条
 import IndexPc from '@/views/threeApp/Pc/IndexPc'//快速咨询
 import LawPc from '@/views/threeApp/Pc/LawPc'//关于我们
-
 
 export default[
   //3.0律师发现页下的推荐
@@ -57,12 +47,6 @@ export default[
     // component(resolve){
     //   require(['@/views/threeApp/LawyerFind/LawyerFindLawDetails'],resolve)
     // }
-  },
-  //3.0律师发现页下的文章详情 h5网页打开的
-  {
-    path: '/Webpage',
-    name:'Webpage',
-    component: Webpage
   },
   //3.0律师发现页下的文章详情
   {

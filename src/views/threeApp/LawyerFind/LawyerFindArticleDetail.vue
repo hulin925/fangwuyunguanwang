@@ -1,6 +1,6 @@
 <template>
   <div>
-    <mescroll-vue :down="mescrollDown" :up="mescrollUp" @init="mescrollInit">
+    <mescroll-vue :down="mescrollDown" :up="mescrollUp" @init="mescrollInit" :class="this.$isMobile()?'':'isPc'">
       <section>
         <ul class="list">
           <li>
@@ -123,7 +123,7 @@
       </toast>
     </div>
 
-    <div class="openApp" @click.stop="download">
+    <div class="openApp" @click.stop="download" v-if="this.$isMobile()">
       <span>打开APP查看更多详情</span>
     </div>
 
@@ -184,8 +184,7 @@
     mounted() {
     },
     created() {
-      let a =JSON.parse(sessionStorage.getItem('detailsId'));
-      console.log(a)
+      var a =JSON.parse(sessionStorage.getItem('detailsId'));
       this.lid = a.uid;
       this.id = a.id;
       this.classify = a.classify;
@@ -335,6 +334,12 @@
 
 <style scoped lang="less">
   @r: 30rem;
+
+  .isPc{
+    width:700px;
+    /*overflow: hidden;*/
+    left:300px;
+  }
 
   /*通过fixed固定mescroll的高度*/
   .mescroll {

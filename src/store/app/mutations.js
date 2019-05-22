@@ -36,6 +36,17 @@ export default {
       }
     })
   },
+  isPcNavList(state, id) { //改变state数据
+    state.isPcNavList = state.isPcNavList.map((item, index) => {
+      if (index == id) {
+        item.active = true;
+        return item
+      } else {
+        item.active = false;
+        return item
+      }
+    })
+  },
 	initArrImg(state, data) { //查看图片
 		state.arrImg = data;
 	},

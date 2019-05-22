@@ -1,7 +1,7 @@
 <template>
   <div class="app">
     <!--mescroll滚动区域的基本结构-->
-    <mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit">
+    <mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit"  :class="this.$isMobile()?'':'isPc'">
       <LawyerSpecialNav></LawyerSpecialNav>
       <div>
         <ul class="list">
@@ -214,8 +214,16 @@
         return null;
       },
       JumpDetails(obj) {//跳转律师详情页
-        this.$router.push({name: 'LawyerFindArticleDetail', query: {obj}});
         sessionStorage.setItem('detailsId',JSON.stringify(obj));
+
+        if(this.$isMobile()){
+          this.$router.push({name: 'LawyerFindArticleDetail', query: {obj}});
+        }else{
+          let routeData = this.$router.resolve({
+            path: "/LawyerFindArticleDetail"
+          });
+          window.open(routeData.href, '_blank');
+        }
       },
       // mescroll组件初始化的回调,可获取到mescroll对象
       mescrollInit(mescroll) {
@@ -362,6 +370,25 @@
 
 <style scoped lang="less">
   @r: 30rem;
+
+
+  .isPc{
+    width:700px;
+    overflow: hidden;
+    left:300px;
+  }
+  .isPc .ImgIcon{
+    width:160px;
+    height:160px;
+    padding:10px;
+  }
+  .isPc .Img{
+    width:60%;
+  }
+  .isPc .firstImg{
+    width:60%;
+    /*height:200px;*/
+  }
 
   .noData{
     line-height:100/@r;

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :class="this.$isMobile()?'':'isPc'">
     <header>
       <div class="goBack" @click="specialBack()">
         <img src="../../../assets/img/goback.png" alt="">
@@ -40,7 +40,7 @@
     </header>
 
     <nav>
-      <div v-for="item,index in WrapNavList" @click="navSwitch(item,index)" :class="{active:item.active}">
+      <div v-for="item,index in (this.$isMobile()?WrapNavList:isPcNavList)" @click="navSwitch(item,index)" :class="{active:item.active}">
         <span>{{item.title}}</span>
       </div>
     </nav>
@@ -63,7 +63,8 @@
     },
     computed:mapGetters([
       'WrapNavList',//把数据从getters拿过来
-			'followObj'
+			'followObj',
+      'isPcNavList',//判断是否是pc端
     ]),
     created(){
       this.lid=JSON.parse(sessionStorage.getItem('LawyerId'));
@@ -72,6 +73,11 @@
       for (let i = 0; i < this.WrapNavList.length; i++) {
         if (this.WrapNavList[i].routerName == this.$route.name) {
           this.$store.commit('setLawyerNav', i);
+        }
+      }
+      for (let i = 0; i < this.isPcNavList.length; i++) {
+        if (this.WrapNavList[i].routerName == this.$route.name) {
+          this.$store.commit('isPcNavList', i);
         }
       }
       this.WrapInitData();
@@ -95,6 +101,7 @@
       navSwitch(item, index) {//导航切换
         // this.WrapNavIndex = index;
         this.$store.commit('setLawyerNav',index);
+        this.$store.commit('isPcNavList',index);
         this.$router.push({
           name: item.routerName
         });
@@ -139,7 +146,19 @@
 
 <style scoped lang="less">
   @r: 30rem;
-  //导航定位
+
+
+  .isPc{
+    width:700px;
+    left:300px;
+  }
+  .isPc nav{
+    width:695px;
+    left:300px;
+  }
+  .isPc .Grade{
+    left:355px;
+  }
   .app {
     color: #333;
     background-color: #fff;
@@ -238,6 +257,7 @@
   nav div {
 		text-align: center;
     position: relative;
+    padding:0 40px;
   }
   nav div.active:before {
     position: absolute;

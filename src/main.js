@@ -44,6 +44,13 @@ Vue.prototype.$downloadAndroid = function (){
   // window.location.href="https://web.3fgj.com/sharePage/download1.html";
     window.location.href = "http://android.myapp.com/myapp/detail.htm?apkName=com.w2893097678.zaz";
 }
+Vue.prototype.$isMobile = function (){
+  if(/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)){
+    return true;
+  }else{
+    return false;
+  }
+}
 
 /* eslint-disable no-new */
 new Vue({

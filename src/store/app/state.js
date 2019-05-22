@@ -30,6 +30,23 @@ export default {
       active:false
     },
   ],
+  isPcNavList: [//律师专题页导航,pc端
+    {
+      title: '主页',
+      routerName: 'home',
+      active:true
+    },
+    {
+      title: '观点',
+      routerName: 'viewpoint',
+      active:false
+    },
+    {
+      title: '视频',
+      routerName: 'video',
+      active:false
+    }
+  ],
   isWrapNavList: [//律师专题页导航，援助
     {
       title: '主页',
