@@ -5,7 +5,7 @@ const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
 const vuxLoader = require('vux-loader')
 
-function resolve (dir) {
+function resolve(dir) {
   return path.join(__dirname, '..', dir)
 }
 
@@ -76,7 +76,17 @@ let webpackConfig = {
           limit: 10000,
           name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
         }
-      }
+      },
+      {
+        test: /\.svg$/,
+        use: {
+          loader: 'svg-sprite-loader',
+          query: {
+            name: '[name]_[hash:6]',
+            prefixize: true
+          }
+        }
+      },
     ]
   }
 }
@@ -89,7 +99,7 @@ module.exports = vuxLoader.merge(webpackConfig, {
     {
       name: 'duplicate-style',
       options: {
-        cssProcessorOptions : {
+        cssProcessorOptions: {
           safe: true,
           zindex: false,
           autoprefixer: {
