@@ -1,9 +1,9 @@
 <template>
   <div class="app">
-    <mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit">
+    <mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit" :class="this.$isMobile()?'':'isPc'">
       <header>
         <div class="search">
-          <img :src="titleImg" alt="">
+          <img :src="titleImg" alt="" class="headerImg">
           <!--<div><img src="../../../assets/img/Back.png" alt="" class="goBack" @click="goBack"></div>-->
           <img src="../../../assets/img/search.png" alt="" class="searchImg">
           <input type="text" placeholder="输入关键之，支持全文检索" v-on:input="inputFunc()" v-model="keywords">
@@ -91,19 +91,16 @@
       //   SearchBackThree();
       // },
       goDetails(item) {//点击跳转详情
-        this.obj.id = item.id;
-        this.obj.classify = this.classify;
-        // SearchIdThree(this.obj);//ios传递参数
-        // window.htmlToAndroid.SearchIdThree(JSON.stringify(this.obj));//android 传递参数
-
-        if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
-          //Ios
-          SearchIdThree(this.obj);//ios传递参数
-        } else if (/(Android)/i.test(navigator.userAgent)) {
-          //Android终端
-          window.AndroidMethod.SearchIdThree(JSON.stringify(this.obj));//android 传递参数
+        if(this.$isMobile()){
+          this.$router.push({name:'LawyerFindLawDetails',query:{id:item.id}})
+        }else{
+          let routeData = this.$router.resolve({
+            name: "LawyerFindLawDetails",
+            query:{id:item.id}
+          });
+          window.open(routeData.href, '_blank');
         }
-        // this.$router.push({name:'LawyerFindLawDetails',query:{id:item.id}})
+
       },
       inputFunc(v) {
         this.mescroll.resetUpScroll()
@@ -199,12 +196,15 @@
     position: relative;
     height: 500/@r;
   }
+  .isPc .headerImg{
+    height:280px;
+  }
 
   .search .searchImg {
     width: 50/@r;
     position: absolute;
     top: 60/@r;
-    left: 120/@r;
+    left: 15%;
     z-index: 3;
   }
 

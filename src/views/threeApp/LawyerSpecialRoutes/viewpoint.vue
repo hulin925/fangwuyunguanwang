@@ -371,11 +371,8 @@
 <style scoped lang="less">
   @r: 30rem;
 
-
   .isPc{
-    width:700px;
     overflow: hidden;
-    left:300px;
   }
   .isPc .ImgIcon{
     width:160px;

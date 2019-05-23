@@ -1,5 +1,5 @@
 <template>
-  <div class="Details">
+  <div class="Details" :class="this.$isMobile()?'':'isPc'">
 		<div class="content">
 			<h1>{{data.title}}</h1>
 			<ul class="release">
@@ -16,7 +16,7 @@
 			</div>
 		</div>
 
-    <div class="openApp" @click.stop="download" v-if="isWebpage==1">
+    <div class="openApp" @click.stop="download" v-if="this.$isMobile()">
       <span>打开APP查看更多法条</span>
     </div>
   </div>
@@ -28,42 +28,27 @@ export default {
   name: 'LawDetails',
   data () {
     return {
-      isWebpage:'',//判断是否是H5网页打开
+      id:'',
+      lid:'',
       collection:{},//收藏数据
 			data:{},
     }
   },
 	created(){
-    this.isWebpage =this.GetQueryString('isWebpage');//判断是否有下载按钮
+    console.log(this.$route)
+    this.id=this.$route.query.id;
 		this.initData();
 	},
 	methods:{
 		initData(){
 			let options=new FormData();
-			options.append('id',this.GetQueryString('id'));//510
-			options.append('uid',this.GetQueryString('uid'));//510
+			options.append('id',this.id);//510
+			// options.append('uid',this.lid);//510
       options.append('classify','5');//5
 			// options.append('tag','fatiao');//fatiao
 			this.$store.dispatch('LawyerFindFatiaoDetails',options)
         .then(data=>{
-          console.log(data)
 				  this.data=data;
-          this.collection.classify=data.classify;//收藏数据传递
-          this.collection.ArticleId=data.id;//收藏数据传递
-          this.collection.iscollection=data.iscollection;//收藏数据传递
-          // Collection(this.collection);//收藏方法ios
-
-          // if(this.isWebpage==1){
-          //   return;
-          // }
-
-          if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
-            //Ios
-            Collection(this.collection);//收藏方法
-          } else if (/(Android)/i.test(navigator.userAgent)) {
-            //Android终端
-            window.AndroidMethod.Collection(JSON.stringify(this.collection));//android 传递参数
-          }
 			})
 		},
     GetQueryString(name) { //截取?后想要的数据 lawyerId
@@ -79,6 +64,9 @@ export default {
 <style scoped lang="less">
 	@r:30rem;
 
+  .isPc{
+    margin-left:300px;
+  }
 	h1{
 		font-size:38/@r;
 	}

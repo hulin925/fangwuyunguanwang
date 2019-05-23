@@ -1,5 +1,8 @@
 
 //3.0数据
+import navPc from '@/components/navPc'//nav
+import LawyerFindRecommendPc from '@/views/threeApp/stylePc/LawyerFindRecommendPc'//发现页下的推荐
+
 import LawyerFindRecommend from '@/views/threeApp/LawyerFind/LawyerFindRecommend'//发现页下的推荐
 import LawyerFindArticleDetail from '@/views/threeApp/LawyerFind/LawyerFindArticleDetail'//发现页下的文章详情
 import LawyerFindFatiao from '@/views/threeApp/LawyerFind/LawyerFindFatiao'//发现页下的法条
@@ -24,6 +27,16 @@ export default[
   //3.0律师发现页下的推荐
   {
     path: '/',
+    name:'navPc',
+    component: navPc,
+  },
+  {
+    path: '/LawyerFindRecommendPc',
+    name:'LawyerFindRecommendPc',
+    component: LawyerFindRecommendPc,
+  },
+  {
+    path: '/LawyerFindRecommend',
     name:'LawyerFindRecommend',
     component: LawyerFindRecommend,
     // component(resolve){

@@ -38,7 +38,6 @@
       }
     },
     created(){
-		  console.log(this.$isMobile(),22222)
     }
 
 	}

@@ -32,7 +32,7 @@
           <h1>{{followObj.click_num}}</h1>
           <p>获赞数</p>
         </div>
-        <div @click.stop="myFans()">
+        <div @click.stop="myFans(WrapData)">
           <h1>{{followObj.history_fansh_count}}</h1>
           <p>粉丝</p>
         </div>
@@ -86,7 +86,7 @@
 
     },
     methods:{
-      myFans(){//我的粉丝
+      myFans(id){//我的粉丝
         this.$router.push({name:'myFans'})
       },
       specialBack(){//返回键
@@ -148,13 +148,12 @@
   @r: 30rem;
 
 
-  .isPc{
-    width:700px;
-    left:300px;
-  }
   .isPc nav{
     width:695px;
     left:300px;
+  }
+  .isPc nav div{
+    padding:0 40px;
   }
   .isPc .Grade{
     left:355px;
@@ -257,7 +256,6 @@
   nav div {
 		text-align: center;
     position: relative;
-    padding:0 40px;
   }
   nav div.active:before {
     position: absolute;

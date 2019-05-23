@@ -1,5 +1,5 @@
 <template>
-  <div class="app">
+  <div class="app" :class="this.$isMobile()?'':'isPc'">
     <div class="title">
       <img src="../../../assets/img/goback.png" alt="" @click.stop="$router.go(-1)">
       <span>我的粉丝</span>
@@ -65,7 +65,7 @@
       }
     },
     created() {
-      this.lid = JSON.parse(sessionStorage.getItem('specialInfo')).lid;
+      this.lid = JSON.parse(sessionStorage.getItem('specialInfo')).uid;
     },
     methods: {
       // mescroll组件初始化的回调,可获取到mescroll对象
@@ -112,10 +112,12 @@
 <style scoped lang="less">
   @r: 30rem;
 
+  .isPc{
+    margin-left:300px;
+  }
   .title {
-    padding-top: 35/@r;
     text-align: center;
-    height: 130/@r;
+    height: 100/@r;
     line-height: 100/@r;
     font-size: 34/@r;
     font-weight: bold;
@@ -130,16 +132,15 @@
     width: 80/@r;
     height: 80/@r;
     left: 20/@r;
-    top: 44/@r;
+    top: 10/@r;
     padding: 20/@r;
   }
-
   .list {
     padding-top: 20/@r;
   }
 
   li {
-    padding: 10/@r 20/@r;
+    padding: 20/@r;
     border-bottom: 1px solid #e6e6e6;
   }
 

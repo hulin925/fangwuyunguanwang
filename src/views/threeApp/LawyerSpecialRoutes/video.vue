@@ -277,11 +277,8 @@
 <style scoped lang="less">
   @r: 30rem;
 
-
   .isPc{
-    width:700px;
     overflow: hidden;
-    left:300px;
   }
   /*通过fixed固定mescroll的高度*/
   .mescroll {
