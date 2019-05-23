@@ -4,160 +4,164 @@
       <img src="../../../assets/img/follow.png" alt>
       <p>暂无关注律师！</p>
     </div>
-
-    <section v-else ref="contain" id="contain">
-      <ul class="list">
-        <li v-for="item,index in dataList">
-          <div v-if="item.pro">
-            <div class="title clearfix">
-              <div class="left">
+    <div id="contentWrap" ref="contain" v-else>
+      <section id="contain">
+        <ul class="list">
+          <li v-for="item,index in dataList">
+            <div v-if="item.pro">
+              <div class="title clearfix">
+                <div class="left">
+                  <img :src="item.pic[0]" alt>
+                </div>
+                <div class="center">
+                  <h2>{{item.advtitle}}</h2>
+                </div>
+                <div class="right">
+                  <span class="Advertisement">广 告</span>
+                </div>
+              </div>
+              <div class="AdvertisementContent" @click.stop="pictureJump(item)">
                 <img :src="item.pic[0]" alt>
               </div>
-              <div class="center">
-                <h2>{{item.advtitle}}</h2>
-              </div>
-              <div class="right">
-                <span class="Advertisement">广 告</span>
-              </div>
             </div>
-            <div class="AdvertisementContent" @click.stop="pictureJump(item)">
-              <img :src="item.pic[0]" alt>
-            </div>
-          </div>
-          <div v-else>
-            <div class="title clearfix" @click.stop="PersonalTopics(item)">
-              <div class="left">
-                <img :src="item.faces" alt>
-              </div>
-
-              <div class="Grade">
-                <img
-                  src="../../../assets/img/lanV.png"
-                  alt
-                  v-if="item.cert_type!=1"
-                  class="GradeFirst"
-                >
-                <img src="../../../assets/img/level.png" alt v-else class="GradeTwo">
-              </div>
-
-              <div class="center">
-                <h2 :class="{GradeColor:item.cert_type != 1}">{{item.username}}</h2>
-                <p v-if="item.add_time!=0">{{item.add_time}}</p>
-                <p v-else>{{item.company}}</p>
-              </div>
-              <div class="right" @click.stop="download">
-                <span v-if="item.isguanzhu==0">+ 关注</span>
-                <span v-else class="cancelFollow">
-                  <i class="iconfont icon-gou"></i>
-                  已关注
-                </span>
-              </div>
-            </div>
-            <div class="topTitle" @click.stop="JumpDetail(item)">{{item.title}}</div>
-            <!--<div class="brief clearfix">-->
-            <!--<span>刑事</span>-->
-            <!--<span>治安</span>-->
-            <!--</div>-->
-            <div v-if="item.classify==2">
-              <div class="content" @click.stop="JumpDetail(item)" ref="contentss">
-                <div v-html="item.content"></div>
-              </div>
-              <div class="Img clearfix" :style="{width:item.num==4?'80%':'100%'}">
-                <div class="ImgIcon" v-for="v,index in item.arr" v-if="item.num>1&&item.num!=4">
-                  <div>
-                    <img v-lazy="v" alt>
-                  </div>
+            <div v-else>
+              <div class="title clearfix" @click.stop="PersonalTopics(item)">
+                <div class="left">
+                  <img :src="item.faces" alt>
                 </div>
 
-                <div class="ImgIcon" v-for="v,index in item.arr" v-if="item.num==4">
-                  <div>
-                    <img v-lazy="v" alt>
-                  </div>
+                <div class="Grade">
+                  <img
+                    src="../../../assets/img/lanV.png"
+                    alt
+                    v-if="item.cert_type!=1"
+                    class="GradeFirst"
+                  >
+                  <img src="../../../assets/img/level.png" alt v-else class="GradeTwo">
                 </div>
 
-                <div class="firstImg" v-if="item.num==1">
-                  <div>
-                    <img v-lazy="item.arr[0]" alt>
+                <div class="center">
+                  <h2 :class="{GradeColor:item.cert_type != 1}">{{item.username}}</h2>
+                  <p v-if="item.add_time!=0">{{item.add_time}}</p>
+                  <p v-else>{{item.company}}</p>
+                </div>
+                <div class="right" @click.stop="download">
+                  <span v-if="item.isguanzhu==0">+ 关注</span>
+                  <span v-else class="cancelFollow">
+                    <i class="iconfont icon-gou"></i>
+                    已关注
+                  </span>
+                </div>
+              </div>
+              <div class="topTitle" @click.stop="JumpDetail(item)">{{item.title}}</div>
+              <!--<div class="brief clearfix">-->
+              <!--<span>刑事</span>-->
+              <!--<span>治安</span>-->
+              <!--</div>-->
+              <div v-if="item.classify==2">
+                <div class="content" @click.stop="JumpDetail(item)" ref="contentss">
+                  <div v-html="item.content"></div>
+                </div>
+                <div class="Img clearfix" :style="{width:item.num==4?'80%':'100%'}">
+                  <div class="ImgIcon" v-for="v,index in item.arr" v-if="item.num>1&&item.num!=4">
+                    <div>
+                      <img v-lazy="v" alt>
+                    </div>
+                  </div>
+
+                  <div class="ImgIcon" v-for="v,index in item.arr" v-if="item.num==4">
+                    <div>
+                      <img v-lazy="v" alt>
+                    </div>
+                  </div>
+
+                  <div class="firstImg" v-if="item.num==1">
+                    <div>
+                      <img v-lazy="item.arr[0]" alt>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
 
-            <div v-if="item.classify==6">
-              <div class="content" @click.stop="JumpDetail(item)">
-                <div v-html="item.content"></div>
-              </div>
-              <div class="Img clearfix" :style="{width:item.AndroidNumber==4?'80%':'100%'}">
-                <div
-                  class="ImgIcon"
-                  v-for="v,index in item.thumbnail"
-                  v-if="item.AndroidNumber>1&&item.AndroidNumber!=4"
-                >
-                  <div>
-                    <img v-lazy="v" alt>
+              <div v-if="item.classify==6">
+                <div class="content" @click.stop="JumpDetail(item)">
+                  <div v-html="item.content"></div>
+                </div>
+                <div class="Img clearfix" :style="{width:item.AndroidNumber==4?'80%':'100%'}">
+                  <div
+                    class="ImgIcon"
+                    v-for="v,index in item.thumbnail"
+                    v-if="item.AndroidNumber>1&&item.AndroidNumber!=4"
+                  >
+                    <div>
+                      <img v-lazy="v" alt>
+                    </div>
+                  </div>
+
+                  <div
+                    class="ImgIcon"
+                    v-for="v,index in item.thumbnail"
+                    v-if="item.AndroidNumber==4"
+                  >
+                    <div>
+                      <img v-lazy="v" alt>
+                    </div>
+                  </div>
+
+                  <div class="firstImg" v-if="item.AndroidNumber==1">
+                    <div>
+                      <img v-lazy="item.thumbnail[0]" alt>
+                    </div>
                   </div>
                 </div>
-
-                <div class="ImgIcon" v-for="v,index in item.thumbnail" v-if="item.AndroidNumber==4">
-                  <div>
-                    <img v-lazy="v" alt>
-                  </div>
+              </div>
+              <div class="Img clearfix" v-if="item.classify==3">
+                <div v-if="item.local==0" @click.stop="androidVideo(item.videos)">
+                  <video width="320" height="240" :poster="item.cover" controls="controls">
+                    <source :src="item.videos" type="video/mp4">
+                  </video>
                 </div>
+                <div v-else-if="item.local==1" @click.stop="androidVideo(item.path)">
+                  <video width="320" height="240" :poster="item.cover" controls="controls">
+                    <source :src="item.path" type="video/mp4">
+                  </video>
+                </div>
+              </div>
 
-                <div class="firstImg" v-if="item.AndroidNumber==1">
-                  <div>
-                    <img v-lazy="item.thumbnail[0]" alt>
-                  </div>
+              <div class="bottom">
+                <div @click.stop="JumpDetail(item)">
+                  <i class="iconfont icon-yuedu"></i>
+                  <span>阅读</span>
+                  <i>{{item.click =''?'0':item.click?item.click:'0'}}</i>
+                </div>
+                <!--//item.id,item.classify,item.isguanzhu-->
+                <div @click.stop="JumpDetail(item)">
+                  <i class="iconfont icon-pinglun"></i>
+                  <span>评论</span>
+                  <i>{{item.history_comment_count}}</i>
+                </div>
+                <div @click.stop="download" :class="{color:item.iszan == 1}">
+                  <span>
+                    <i class="iconfont icon-zan" :class="{color:item.iszan == 1}"></i>
+                  </span>
+                  <span>点赞</span>
+                  <i>{{item.histort_reward_count}}</i>
                 </div>
               </div>
             </div>
-            <div class="Img clearfix" v-if="item.classify==3">
-              <div v-if="item.local==0" @click.stop="androidVideo(item.videos)">
-                <video width="320" height="240" :poster="item.cover" controls="controls">
-                  <source :src="item.videos" type="video/mp4">
-                </video>
-              </div>
-              <div v-else-if="item.local==1" @click.stop="androidVideo(item.path)">
-                <video width="320" height="240" :poster="item.cover" controls="controls">
-                  <source :src="item.path" type="video/mp4">
-                </video>
-              </div>
-            </div>
-
-            <div class="bottom">
-              <div @click.stop="JumpDetail(item)">
-                <i class="iconfont icon-yuedu"></i>
-                <span>阅读</span>
-                <i>{{item.click =''?'0':item.click?item.click:'0'}}</i>
-              </div>
-              <!--//item.id,item.classify,item.isguanzhu-->
-              <div @click.stop="JumpDetail(item)">
-                <i class="iconfont icon-pinglun"></i>
-                <span>评论</span>
-                <i>{{item.history_comment_count}}</i>
-              </div>
-              <div @click.stop="download" :class="{color:item.iszan == 1}">
-                <span>
-                  <i class="iconfont icon-zan" :class="{color:item.iszan == 1}"></i>
-                </span>
-                <span>点赞</span>
-                <i>{{item.histort_reward_count}}</i>
-              </div>
-            </div>
-          </div>
-        </li>
-      </ul>
-      <p v-show="isLoading && dataList.length" style="text-align:center">
-        <img
-          class="d2-home__loading"
-          src="https://hly.1000da.com.cn/assets/images/loading-spinner.svg"
-          alt="loading"
-        >加载中
-      </p>
-      <p v-show="!isLoading && dataList.length && dataList.length >= total">没有更多数据了...</p>
-      <p v-show="!dataList.length">暂无数据...</p>
-    </section>
-
+          </li>
+        </ul>
+        <p v-show="isLoading && dataList.length" style="text-align:center">
+          <img
+            class="d2-home__loading"
+            src="https://hly.1000da.com.cn/assets/images/loading-spinner.svg"
+            alt="loading"
+          >加载中
+        </p>
+        <p v-show="!isLoading && dataList.length && dataList.length >= total">没有更多数据了...</p>
+        <p v-show="!dataList.length">暂无数据...</p>
+      </section>
+    </div>
     <div class="showStart">
       <toast v-model="showStart" type="text" :time="1000">
         <div class="pointStart">
@@ -477,9 +481,18 @@ export default {
 
 <style scoped lang="less" type="text/less">
 @r: 30rem;
-#contain {
+#contentWrap {
+  position: fixed;
+  top: 169px;
+  left: 0;
+  bottom: 0;
   overflow: auto;
-  height: 600px;
+  width: 100%;
+}
+#contain {
+  height: 100%;
+  width: 700px;
+  margin: 0 auto;
 }
 .d2-home__loading {
   height: 22px;
